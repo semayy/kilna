@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kilna | Brand Portal 2026 (Light Edition)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@200;300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PDF Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        /* --- 1. DESIGN TOKENS (LIGHT THEME) --- */
+        :root {
+            /* Palette */
+            --ink: #1F1D1B;         /* Ana Metin Rengi */
+            --ink-light: #595552;   /* İkincil Metin */
+            --clay: #C18C74;        /* Marka Rengi */
+            --white: #FFFFFF;       /* Saf Beyaz */
+            --paper: #FAF9F6;       /* Alçı Beyazı / Sıcak Zemin */
+            --sand: #F2F0EB;        /* Kum Beji / Karton */
+            --line: rgba(31, 29, 27, 0.08); /* İnce Çizgiler */
+            
+            /* Typography */
+            --font-display: 'Comfortaa', cursive;
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Inter', sans-serif;
+            
+            /* Layout */
+            --sidebar-width: 260px;
+            --page-padding: 80px;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* --- 2. RESET & BASE --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--white);
+            color: var(--ink);
+            font-family: var(--font-sans);
+            overflow: hidden; /* Scroll handled by main-content normally */
+        }
+
+        a { text-decoration: none; color: inherit; transition: color 0.3s; }
+        ul { list-style: none; }
+        button { border: none; background: none; cursor: pointer; font-family: inherit; }
+
+        /* --- 3. LAYOUT STRUCTURE --- */
+        .app-container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+
+        /* Mobile Header & Toggle */
+        .mobile-header {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 60px;
+            background: var(--white);
+            border-bottom: 1px solid var(--line);
+            z-index: 2000;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        /* Sidebar Navigation (Light) */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--white);
+            color: var(--ink);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--line);
+            z-index: 100;
+            transition: transform 0.3s var(--ease-out);
+        }
+
+        .brand-header {
+            padding: 40px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-scroller {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px 0;
+        }
+        
+        .nav-scroller::-webkit-scrollbar { width: 4px; }
+        .nav-scroller::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); }
+
+        .nav-group { margin-bottom: 30px; }
+        .nav-group-title {
+            padding: 0 40px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--clay);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 8px 40px;
+            font-size: 13px;
+            color: var(--ink-light);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--ink);
+            background: var(--paper);
+            padding-left: 45px;
+        }
+        
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--clay);
+        }
+
+        .sidebar-footer {
+            padding: 20px 40px;
+            font-size: 10px;
+            color: var(--ink-light);
+            border-top: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-download {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background: var(--ink);
+            color: white;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        .btn-download:hover { background: var(--clay); }
+        .btn-download i { font-size: 14px; }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            background-color: var(--paper);
+            height: 100%;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+            position: relative;
+            width: 100%; /* Ensure width is handled */
+        }
+
+        /* Texture Layer */
+        .texture-layer {
+            position: fixed;
+            top: 0; left: var(--sidebar-width); right: 0; bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 999;
+            mix-blend-mode: multiply;
+        }
+
+        /* --- 4. SECTION STYLING --- */
+        section {
+            min-height: 100vh;
+            width: 100%;
+            scroll-snap-align: start;
+            position: relative;
+            display: flex;
+            overflow: hidden;
+            border-bottom: 1px solid var(--line);
+        }
+
+        section:nth-child(odd) { background-color: var(--paper); }
+        section:nth-child(even) { background-color: var(--white); }
+
+        .section-inner {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: repeat(12, 1fr);
+            gap: 20px;
+            padding: var(--page-padding);
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Typography */
+        .h-hero { font-family: var(--font-display); font-size: 120px; line-height: 0.9; letter-spacing: -0.04em; color: var(--ink); }
+        .h1 { font-family: var(--font-serif); font-size: 64px; line-height: 1; margin-bottom: 24px; color: var(--ink); }
+        .h2 { font-family: var(--font-display); font-size: 42px; line-height: 1.1; margin-bottom: 16px; font-weight: 700; color: var(--ink); }
+        
+        .label { 
+            font-family: var(--font-sans); font-size: 10px; text-transform: uppercase; 
+            letter-spacing: 0.2em; color: var(--clay); font-weight: 600; margin-bottom: 20px; display: block; 
+        }
+        
+        .body-lg { font-size: 20px; line-height: 1.6; font-weight: 300; color: var(--ink-light); }
+        .body-sm { font-size: 14px; line-height: 1.6; color: var(--ink-light); }
+
+        .img-cover { width: 100%; height: 100%; object-fit: cover; display: block; }
+        
+        .card {
+            background: var(--white);
+            padding: 40px;
+            border: 1px solid var(--line);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            transition: all 0.4s var(--ease-out);
+            cursor: default;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+            border-color: rgba(193, 140, 116, 0.3);
+        }
+
+        .logo-grid-container:hover .construction-lines { opacity: 0.4; }
+        .construction-lines { transition: opacity 0.5s; opacity: 0.1; }
+
+        .swatch {
+            aspect-ratio: 1;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        /* --- 5. RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 1024px) {
+            :root { --page-padding: 40px; --sidebar-width: 240px; }
+            .h-hero { font-size: 80px; }
+            .h1 { font-size: 48px; }
+        }
+
+        @media (max-width: 768px) {
+            :root { --page-padding: 30px; }
+            
+            .app-container { flex-direction: column; }
+            .mobile-header { display: flex; }
+            
+            .sidebar {
+                position: fixed;
+                top: 60px; left: 0; bottom: 0;
+                width: 100%;
+                transform: translateX(-100%);
+                z-index: 1500;
+                border-right: none;
+            }
+            .sidebar.active { transform: translateX(0); }
+            
+            .main-content {
+                padding-top: 60px; /* Space for header */
+                scroll-snap-type: none; /* Disable snap on mobile for better flow */
+            }
+            
+            section {
+                height: auto;
+                min-height: auto;
+                padding-bottom: 60px;
+                overflow: visible;
+                flex-direction: column;
+            }
+            
+            .section-inner {
+                display: flex;
+                flex-direction: column;
+                padding: var(--page-padding);
+                gap: 40px;
+            }
+            
+            .texture-layer { left: 0; }
+            
+            #logo-clear .section-inner > div:nth-child(2) {
+                height: 300px;
+            }
+            
+            .h-hero { font-size: 60px; }
+            .h1 { font-size: 36px; }
+            .h2 { font-size: 28px; }
+            .body-lg { font-size: 16px; }
+            
+            #values .section-inner > div:nth-child(2),
+            #colors .section-inner > div:nth-child(2),
+            #social .section-inner > div:nth-child(2) {
+                grid-template-columns: 1fr; 
+            }
+
+            #stationery .section-inner > div:nth-child(2),
+            #packaging .section-inner > div:nth-child(2) {
+                height: 300px;
+                margin-top: 20px;
+            }
+        }
+
+        /* --- 6. PRINT / PDF STYLES --- */
+        /* These styles override everything when printing or saving as PDF */
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 0; /* Remove browser default margins */
+            }
+            
+            body { 
+                background-color: white !important;
+                color: black !important;
+                overflow: visible !important;
+                height: auto !important;
+                font-size: 12pt;
+            }
+
+            /* Hide UI elements */
+            .sidebar, .mobile-header, .texture-layer, .btn-download { 
+                display: none !important; 
+            }
+
+            .app-container {
+                display: block !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+
+            .main-content {
+                width: 100% !important;
+                height: auto !important;
+                overflow: visible !important;
+                background: white !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: block !important;
+            }
+
+            section {
+                height: 100vh !important; /* Force each section to take a full page */
+                width: 100% !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                border-bottom: none !important;
+                background-color: white !important;
+                display: block !important;
+                position: relative !important;
+                overflow: hidden !important; /* Keep content within page */
+            }
+
+            .section-inner {
+                height: 100% !important;
+                display: grid !important;
+                grid-template-columns: repeat(12, 1fr) !important;
+                grid-template-rows: repeat(12, 1fr) !important;
+                padding: 40px !important; /* Print margin */
+                gap: 20px !important;
+            }
+
+            /* Fix Colors for Print */
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            
+            .card { box-shadow: none !important; border: 1px solid #ccc !important; }
+            .logo-grid-container .construction-lines { opacity: 0.3 !important; }
+        }
+
+        /* Helper class for html2pdf temporary styling */
+        body.generating-pdf .sidebar, 
+        body.generating-pdf .mobile-header, 
+        body.generating-pdf .btn-download {
+            display: none !important;
+        }
+        body.generating-pdf .main-content {
+            width: 100% !important;
+            overflow: visible !important;
+            height: auto !important;
+        }
+        body.generating-pdf section {
+            height: 1123px !important; /* A4 height in pixels approx @ 96dpi is different, but for html2pdf usually best to let it flow or force height */
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+
+<div class="mobile-header">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <svg width="24" height="24" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6">
+            <path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" />
+            <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" opacity="0.6"/>
+        </svg>
+        <span style="font-family: var(--font-display); font-weight: 700; font-size: 18px;">kilna</span>
+    </div>
+    <button onclick="toggleSidebar()" style="font-size: 20px; color: var(--ink);">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+</div>
+
+<div class="app-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand-header">
+            <svg width="30" height="30" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6">
+                <path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" />
+                <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" opacity="0.6"/>
+            </svg>
+            <span style="font-family: var(--font-display); font-weight: 700;">kilna</span>
+        </div>
+
+        <nav class="nav-scroller">
+            <div class="nav-group">
+                <div class="nav-group-title">Giriş</div>
+                <a class="nav-link active" onclick="scrollToSection('cover')">Kapak</a>
+                <a class="nav-link" onclick="scrollToSection('manifesto')">Manifesto</a>
+                <a class="nav-link" onclick="scrollToSection('values')">Değerler</a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Temel Unsurlar</div>
+                <a class="nav-link" onclick="scrollToSection('logo-primary')">Logo: Birincil</a>
+                <a class="nav-link" onclick="scrollToSection('logo-grid')">Logo: Anatomi</a>
+                <a class="nav-link" onclick="scrollToSection('logo-clear')">Logo: Güvenli Alan</a>
+                <a class="nav-link" onclick="scrollToSection('typography')">Tipografi</a>
+                <a class="nav-link" onclick="scrollToSection('colors')">Renk Paleti</a>
+            </div>
+
+             <div class="nav-group">
+                <div class="nav-group-title">Uygulamalar</div>
+                <a class="nav-link" onclick="scrollToSection('stationery')">Kurumsal Kimlik</a>
+                <a class="nav-link" onclick="scrollToSection('packaging')">Ambalaj</a>
+                <a class="nav-link" onclick="scrollToSection('social')">Sosyal Medya</a>
+            </div>
+            
+            <div class="nav-group">
+                <div class="nav-group-title">Bitiş</div>
+                <a class="nav-link" onclick="scrollToSection('contact')">İletişim</a>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="btn-download" onclick="generatePDF()">
+                <i class="fa-solid fa-file-arrow-down"></i>
+                PDF Olarak İndir
+            </button>
+            <div style="opacity: 0.5; margin-top: 10px;">
+                v3.5 • Mobile Ready<br>
+                Kilna Internal Use
+            </div>
+        </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="main-content" id="mainContent">
+        <div class="texture-layer"></div>
+
+        <!-- 01. COVER -->
+        <section id="cover" style="background-color: var(--paper);">
+            <div class="section-inner">
+                <div style="grid-column: 1/-1; grid-row: 1/-1; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1; text-align: center;">
+                    <span class="label" style="border: 1px solid var(--clay); padding: 8px 20px; border-radius: 50px; margin-bottom: 40px; background: white;">Brand Guidelines 2026</span>
+                    <h1 class="h-hero">kilna</h1>
+                    <p class="h1" style="font-style: italic; font-size: 32px; margin-top: 20px; color: var(--ink-light);">The art of imperfect beauty.</p>
+                </div>
+                <!-- Subtle Background Element -->
+                <div style="position: absolute; right: -5%; bottom: -10%; opacity: 0.1;">
+                     <svg width="600" height="600" viewBox="0 0 100 100" fill="none" stroke="var(--clay)" stroke-width="0.5">
+                        <path d="M50 50 m -45 0 a 45 45 0 1 0 90 0 a 45 45 0 1 0 -90 0" />
+                        <path d="M50 50 m -35 0 a 35 35 0 1 0 70 0 a 35 35 0 1 0 -70 0" opacity="0.6"/>
+                        <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" opacity="0.3"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- 02. MANIFESTO -->
+        <section id="manifesto" style="background-color: var(--white);">
+            <div class="section-inner">
+                <div style="grid-column: 1/7; grid-row: 1/-1; position: relative; padding: 40px 0;">
+                    <div style="width: 100%; height: 100%; overflow: hidden; border-radius: 4px; min-height: 300px;">
+                        <img src="https://images.unsplash.com/photo-1493106641515-6b5631de4bb9?q=80&w=1000&auto=format&fit=crop" class="img-cover" style="filter: grayscale(100%) brightness(1.1) contrast(0.9);" crossorigin="anonymous">
+                    </div>
+                </div>
+                <div style="grid-column: 7/13; grid-row: 1/-1; padding-left: 40px; display: flex; flex-direction: column; justify-content: center;">
+                    <span class="label">Manifesto</span>
+                    <h2 class="h1">Toprağın<br>Sessizliği.</h2>
+                    <p class="body-lg" style="margin-bottom: 30px; color: var(--ink);">
+                        Kilna, modern dünyanın gürültüsüne karşı bir nefes alanıdır. Biz, fabrikasyon pürüzsüzlüğü değil, elin bıraktığı izi kutsuyoruz.
+                    </p>
+                    <p class="body-sm">
+                        Beyazın üzerindeki gölgeler, kusurların şiirselliği ve malzemenin dürüstlüğü. Hikayemiz topraktan başlar, masada son bulur.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03. VALUES -->
+        <section id="values" style="background-color: var(--paper);">
+            <div class="section-inner">
+                <div style="grid-column: 2/12; grid-row: 2/3; text-align: center;">
+                    <h2 class="h2">Marka Değerleri</h2>
+                </div>
+                <div style="grid-column: 2/12; grid-row: 4/10; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;">
+                    <!-- Card 1 -->
+                    <div class="card">
+                        <span class="label">01</span>
+                        <h3 class="h1" style="font-size: 32px; font-style: italic; margin-bottom: 20px;">Wabi-Sabi</h3>
+                        <p class="body-sm">Kusurları kabul etmek. Geçiciliğin içindeki derin güzelliği görmek.</p>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="card" style="background: var(--ink); color: white;">
+                        <span class="label" style="color: var(--clay);">02</span>
+                        <h3 class="h1" style="font-size: 32px; font-style: italic; margin-bottom: 20px; color: white;">Zanaat</h3>
+                        <p class="body-sm" style="color: rgba(255,255,255,0.7);">Makine hassasiyeti değil, insan sıcaklığı. Hissetmeden üretme.</p>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="card">
+                        <span class="label">03</span>
+                        <h3 class="h1" style="font-size: 32px; font-style: italic; margin-bottom: 20px;">Döngü</h3>
+                        <p class="body-sm">Doğadan aldığımızı, doğaya zarar vermeden dönüştürmek.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 04. LOGO PRIMARY -->
+        <section id="logo-primary" style="background-color: var(--white);">
+            <div class="section-inner">
+                <div style="grid-column: 1/-1; grid-row: 1/-1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <span class="label">Birincil Logo</span>
+                    <div style="margin-top: 40px; text-align: center;">
+                        <svg width="300" height="300" viewBox="0 0 100 100" fill="none" stroke="var(--ink)" stroke-width="3" style="max-width: 100%;">
+                            <path d="M50 50 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0" />
+                            <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" opacity="0.6"/>
+                            <path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" />
+                        </svg>
+                        <h1 class="h-hero" style="font-size: 100px; margin-top: 20px;">kilna</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 05. LOGO ANATOMY -->
+        <section id="logo-grid" style="background-color: var(--paper);">
+            <div class="section-inner logo-grid-container">
+                <div style="grid-column: 2/6; grid-row: 4/10;">
+                    <span class="label">Logo Anatomisi</span>
+                    <h2 class="h2">Altın Oran &<br>Merkezkaç.</h2>
+                    <p class="body-sm" style="margin-top: 20px;">
+                        Logomuz rastgele çizilmemiştir. Çömlekçi tornasının dönüş fiziği ve doğadaki spiral büyüme oranları (Fibonacci) temel alınmıştır.
+                    </p>
+                    <div style="margin-top: 40px; padding: 20px; border: 1px solid var(--line); background: white;">
+                        <span class="label" style="margin-bottom: 5px;">İpucu</span>
+                        <p class="body-sm" style="font-size: 12px;">Görselin üzerine gelerek ızgara sistemini görebilirsiniz.</p>
+                    </div>
+                </div>
+                <div style="grid-column: 7/12; grid-row: 2/12; display: flex; align-items: center; justify-content: center;">
+                    <svg width="500" height="500" viewBox="0 0 100 100" fill="none" stroke="var(--ink)" stroke-width="1" style="max-width: 100%;">
+                        <!-- Construction Lines -->
+                        <g class="construction-lines" stroke="var(--clay)" stroke-opacity="1" stroke-dasharray="0.5 1">
+                            <line x1="50" y1="0" x2="50" y2="100"/>
+                            <line x1="0" y1="50" x2="100" y2="50"/>
+                            <rect x="10" y="10" width="80" height="80"/>
+                            <circle cx="50" cy="50" r="10"/>
+                            <circle cx="50" cy="50" r="25"/>
+                            <circle cx="50" cy="50" r="40"/>
+                            <line x1="0" y1="0" x2="100" y2="100" opacity="0.3"/>
+                            <line x1="100" y1="0" x2="0" y2="100" opacity="0.3"/>
+                        </g>
+                        <!-- Logo -->
+                        <path d="M50 50 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0" stroke-width="2"/>
+                        <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" stroke-width="2"/>
+                        <path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- 06. CLEAR SPACE -->
+        <section id="logo-clear" style="background-color: var(--white);">
+            <div class="section-inner">
+                 <div style="grid-column: 2/6; grid-row: 4/10;">
+                    <span class="label">Koruma Alanı</span>
+                    <h2 class="h2">Logoya Nefes Aldırın.</h2>
+                    <p class="body-sm">
+                        Logo çevresindeki boşluk (x), logodaki 'k' harfinin yüksekliğine eşittir. Aydınlık bir tasarımda boşluk (white-space) en önemli unsurdur.
+                    </p>
+                </div>
+                <div style="grid-column: 7/12; grid-row: 3/11; border: 1px dashed var(--clay); background: var(--paper); display: flex; justify-content: center; align-items: center; position: relative; min-height: 300px;">
+                    <!-- X indicators -->
+                    <div style="position: absolute; top: 20px; left: 20px; color: var(--clay); font-weight: bold; font-family: var(--font-sans);">x</div>
+                    <div style="position: absolute; bottom: 20px; right: 20px; color: var(--clay); font-weight: bold; font-family: var(--font-sans);">x</div>
+                    
+                    <div style="text-align: center;">
+                        <svg width="150" height="150" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4">
+                            <path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" />
+                            <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" />
+                        </svg>
+                        <h2 class="h2" style="margin: 10px 0 0 0;">kilna</h2>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 07. TYPOGRAPHY -->
+        <section id="typography" style="background-color: var(--paper);">
+            <div class="section-inner">
+                <div style="grid-column: 1/-1; grid-row: 1/2; text-align: center;">
+                    <span class="label">03 — Tipografi</span>
+                </div>
+                
+                <!-- Primary -->
+                <div style="grid-column: 2/6; grid-row: 3/11; border-right: 1px solid var(--line); padding-right: 40px; border-right-style: solid; border-right-width: 1px;">
+                    <span class="label">Display Font</span>
+                    <h2 style="font-family: var(--font-display); font-size: 60px;">Comfortaa</h2>
+                    <div style="font-family: var(--font-display); font-size: 24px; margin-top: 30px; line-height: 1.6; opacity: 0.7;">
+                        ABCÇDEFGĞHIİ<br>JKLMNOÖPRSŞT<br>UÜVYZ
+                    </div>
+                    <div style="margin-top: 40px;">
+                        <span class="label">Kullanım</span>
+                        <p class="body-sm">Logo, büyük başlıklar, kısa vurgular.</p>
+                    </div>
+                </div>
+
+                <!-- Secondary -->
+                <div style="grid-column: 7/11; grid-row: 3/11;">
+                    <span class="label">Editorial Font</span>
+                    <h2 style="font-family: var(--font-serif); font-size: 60px; font-style: italic;">Cormorant</h2>
+                    <div style="font-family: var(--font-serif); font-size: 24px; margin-top: 30px; line-height: 1.6; opacity: 0.7; font-style: italic;">
+                        "Kusurlu olanın<br>mükemmelliği."
+                    </div>
+                    <div style="margin-top: 40px;">
+                        <span class="label">Kullanım</span>
+                        <p class="body-sm">Manifesto metinleri, alıntılar, hikaye anlatımı.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 08. COLORS -->
+        <section id="colors" style="background-color: var(--white);">
+            <div class="section-inner">
+                 <div style="grid-column: 2/5; grid-row: 3/10;">
+                    <span class="label">04 — Renk Paleti</span>
+                    <h2 class="h2">Materyal Tonları</h2>
+                    <p class="body-sm">
+                        Markanın temeli açık tonlardır. Beyaz, ham kağıt ve bej, galeri hissi yaratır. Koyu tonlar sadece keskinlik vermek için kullanılır.
+                    </p>
+                </div>
+                <div style="grid-column: 6/12; grid-row: 3/10; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+                    <!-- Paper (Main) -->
+                    <div style="text-align: center;">
+                        <div class="swatch" style="background: var(--paper); border: 1px solid var(--line);"></div>
+                        <div style="font-weight: bold;">Alçı</div>
+                        <div class="label" style="margin-top: 5px;">#FAF9F6</div>
+                    </div>
+                    <!-- Sand -->
+                    <div style="text-align: center;">
+                        <div class="swatch" style="background: var(--sand); border: 1px solid var(--line);"></div>
+                        <div style="font-weight: bold;">Kum</div>
+                        <div class="label" style="margin-top: 5px;">#F2F0EB</div>
+                    </div>
+                    <!-- Clay -->
+                    <div style="text-align: center;">
+                        <div class="swatch" style="background: var(--clay);"></div>
+                        <div style="font-weight: bold;">Terracotta</div>
+                        <div class="label" style="margin-top: 5px;">#C18C74</div>
+                    </div>
+                     <!-- Ink -->
+                    <div style="text-align: center;">
+                        <div class="swatch" style="background: var(--ink);"></div>
+                        <div style="font-weight: bold;">Kömür</div>
+                        <div class="label" style="margin-top: 5px;">#1F1D1B</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 09. STATIONERY -->
+        <section id="stationery" style="background-color: var(--sand);">
+            <div class="section-inner">
+                <div style="grid-column: 2/6; grid-row: 4/10; z-index: 2;">
+                    <span class="label">Uygulama</span>
+                    <h2 class="h2">Kurumsal Kimlik</h2>
+                    <p class="body-sm">
+                        Temiz, bol boşluklu ve minimal. Kağıt dokusu hissedilmeli.
+                    </p>
+                </div>
+                <div style="grid-column: 6/13; grid-row: 1/-1; position: relative;">
+                    <!-- Mockup Composition -->
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-5deg); width: 300px; height: 180px; background: white; box-shadow: 0 30px 60px rgba(0,0,0,0.1); padding: 30px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px solid rgba(0,0,0,0.05);">
+                         <svg width="40" height="40" viewBox="0 0 100 100" fill="none" stroke="var(--ink)" stroke-width="4"><path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" /></svg>
+                         <div style="font-family: var(--font-display); font-weight: bold; color: var(--ink); margin-top: 30px; font-size: 14px;">kilna studio</div>
+                    </div>
+                    <!-- Envelope -->
+                    <div style="position: absolute; top: 45%; left: 55%; transform: translate(-50%, -50%) rotate(5deg); width: 350px; height: 250px; background: #E5E2DC; box-shadow: 0 20px 40px rgba(0,0,0,0.05); z-index: -1;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. PACKAGING -->
+        <section id="packaging" style="background-color: var(--white);">
+            <div class="section-inner">
+                <div style="grid-column: 2/6; grid-row: 4/10;">
+                    <span class="label">Ambalaj</span>
+                    <h2 class="h2">Kutu Açılışı</h2>
+                    <p class="body-sm">
+                        Beyaz etiketler, doğal kraft kutular üzerinde kontrast yaratır. Terracotta rengi bant veya ip ile vurgu yapılır.
+                    </p>
+                </div>
+                 <div style="grid-column: 7/12; grid-row: 2/12; display: flex; align-items: center; justify-content: center;">
+                    <div style="width: 350px; height: 350px; background: #DBCBB9; box-shadow: 0 30px 60px rgba(0,0,0,0.1); position: relative; display: flex; align-items: center; justify-content: center;">
+                        <!-- Tape -->
+                        <div style="position: absolute; width: 100%; height: 50px; background: var(--clay); transform: rotate(-5deg); opacity: 0.9;"></div>
+                        <!-- Sticker -->
+                        <div style="background: white; padding: 30px; z-index: 2; width: 180px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                            <div style="font-family: var(--font-display); font-weight: bold; font-size: 24px;">kilna</div>
+                            <div style="font-family: var(--font-serif); font-style: italic; font-size: 12px; margin-top: 1
