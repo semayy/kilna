@@ -310,7 +310,8 @@
             
             #values .section-inner > div:nth-child(2),
             #colors .section-inner > div:nth-child(2),
-            #social .section-inner > div:nth-child(2) {
+            #social .section-inner > div:nth-child(2),
+            #logo-variations .section-inner > div:nth-child(2) {
                 grid-template-columns: 1fr; 
             }
 
@@ -443,6 +444,7 @@
                 <a class="nav-link" onclick="scrollToSection('logo-primary')">Logo: Birincil</a>
                 <a class="nav-link" onclick="scrollToSection('logo-grid')">Logo: Anatomi</a>
                 <a class="nav-link" onclick="scrollToSection('logo-clear')">Logo: Güvenli Alan</a>
+                <a class="nav-link" onclick="scrollToSection('logo-variations')">Logo: Varyasyonlar</a>
                 <a class="nav-link" onclick="scrollToSection('typography')">Tipografi</a>
                 <a class="nav-link" onclick="scrollToSection('colors')">Renk Paleti</a>
             </div>
@@ -466,7 +468,7 @@
                 PDF Olarak İndir
             </button>
             <div style="opacity: 0.5; margin-top: 10px;">
-                v3.5 • Mobile Ready<br>
+                v3.6 • Light Edition<br>
                 Kilna Internal Use
             </div>
         </div>
@@ -482,7 +484,7 @@
                 <div style="grid-column: 1/-1; grid-row: 1/-1; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1; text-align: center;">
                     <span class="label" style="border: 1px solid var(--clay); padding: 8px 20px; border-radius: 50px; margin-bottom: 40px; background: white;">Brand Guidelines 2026</span>
                     <h1 class="h-hero">kilna</h1>
-                    <p class="h1" style="font-style: italic; font-size: 32px; margin-top: 20px; color: var(--ink-light);">The art of imperfect beauty.</p>
+                    <p class="h1" style="font-style: italic; font-size: 32px; margin-top: 20px; color: var(--ink-light);">Kusurların içindeki mükemmel denge.</p>
                 </div>
                 <!-- Subtle Background Element -->
                 <div style="position: absolute; right: -5%; bottom: -10%; opacity: 0.1;">
@@ -505,12 +507,12 @@
                 </div>
                 <div style="grid-column: 7/13; grid-row: 1/-1; padding-left: 40px; display: flex; flex-direction: column; justify-content: center;">
                     <span class="label">Manifesto</span>
-                    <h2 class="h1">Toprağın<br>Sessizliği.</h2>
+                    <h2 class="h1">Toprağın Sessiz<br>Hafızası.</h2>
                     <p class="body-lg" style="margin-bottom: 30px; color: var(--ink);">
-                        Kilna, modern dünyanın gürültüsüne karşı bir nefes alanıdır. Biz, fabrikasyon pürüzsüzlüğü değil, elin bıraktığı izi kutsuyoruz.
+                        Hızın ve seri üretimin hüküm sürdüğü bir çağda, Kilna bir duraksamadır. Biz, makinenin soğuk kusursuzluğuna karşı, insan elinin sıcak hatasını ve toprağın kadim hafızasını savunuyoruz.
                     </p>
                     <p class="body-sm">
-                        Beyazın üzerindeki gölgeler, kusurların şiirselliği ve malzemenin dürüstlüğü. Hikayemiz topraktan başlar, masada son bulur.
+                        Her çatlak bir yaşanmışlık, her ton farkı doğanın eşsiz imzasıdır. Tasarımlarımızda 'boşluğun' gücüne inanır; nesneleri değil, o nesnelerin yarattığı dingin anları tasarlarız. Hikayemiz toprağın sabrıyla başlar, sofranızdaki huzurla tamamlanır.
                     </p>
                 </div>
             </div>
@@ -527,19 +529,19 @@
                     <div class="card">
                         <span class="label">01</span>
                         <h3 class="h1" style="font-size: 32px; font-style: italic; margin-bottom: 20px;">Wabi-Sabi</h3>
-                        <p class="body-sm">Kusurları kabul etmek. Geçiciliğin içindeki derin güzelliği görmek.</p>
+                        <p class="body-sm">Zamanın ve yaşanmışlığın izlerini kutsamak. Geçici, eksik ve kusurlu olanın içindeki derin estetiği görebilmek.</p>
                     </div>
                     <!-- Card 2 -->
                     <div class="card" style="background: var(--ink); color: white;">
                         <span class="label" style="color: var(--clay);">02</span>
-                        <h3 class="h1" style="font-size: 32px; font-style: italic; margin-bottom: 20px; color: white;">Zanaat</h3>
-                        <p class="body-sm" style="color: rgba(255,255,255,0.7);">Makine hassasiyeti değil, insan sıcaklığı. Hissetmeden üretme.</p>
+                        <h3 class="h1" style="font-size: 32px; font-style: italic; margin-bottom: 20px; color: white;">El İzi</h3>
+                        <p class="body-sm" style="color: rgba(255,255,255,0.7);">Endüstriyel mükemmellik yerine, zanaatkarın ruhunu taşıyan dokunuşlar. Her parça, parmak uçlarında şekillenen bir diyaloğun ürünüdür.</p>
                     </div>
                     <!-- Card 3 -->
                     <div class="card">
                         <span class="label">03</span>
                         <h3 class="h1" style="font-size: 32px; font-style: italic; margin-bottom: 20px;">Döngü</h3>
-                        <p class="body-sm">Doğadan aldığımızı, doğaya zarar vermeden dönüştürmek.</p>
+                        <p class="body-sm">Topraktan geleni, özüne sadık kalarak şekillendirmek. Doğayı tüketmeden, onunla uyum içinde, etik ve yavaş bir üretim anlayışı.</p>
                     </div>
                 </div>
             </div>
@@ -569,7 +571,7 @@
                     <span class="label">Logo Anatomisi</span>
                     <h2 class="h2">Altın Oran &<br>Merkezkaç.</h2>
                     <p class="body-sm" style="margin-top: 20px;">
-                        Logomuz rastgele çizilmemiştir. Çömlekçi tornasının dönüş fiziği ve doğadaki spiral büyüme oranları (Fibonacci) temel alınmıştır.
+                        Sembolümüz, rastlantısal bir form değil; evrensel bir dengenin izdüşümüdür. Çömlekçi tornasının merkezkaç kuvveti ile doğadaki büyüme spiralleri (Fibonacci) bu formda birleşir. Sabit bir merkez etrafında dönen kilin, ellerin arasından yükselişini simgeler.
                     </p>
                     <div style="margin-top: 40px; padding: 20px; border: 1px solid var(--line); background: white;">
                         <span class="label" style="margin-bottom: 5px;">İpucu</span>
@@ -605,7 +607,7 @@
                     <span class="label">Koruma Alanı</span>
                     <h2 class="h2">Logoya Nefes Aldırın.</h2>
                     <p class="body-sm">
-                        Logo çevresindeki boşluk (x), logodaki 'k' harfinin yüksekliğine eşittir. Aydınlık bir tasarımda boşluk (white-space) en önemli unsurdur.
+                        Boşluk, tasarımın sessizliğidir. Logomuzun çevresindeki koruma alanı (x), markanın dingin duruşunu korumak için hayati önem taşır. Bu alan, gürültüden arındırılmış bir nefes payıdır. (x = 'k' harfinin yüksekliği)
                     </p>
                 </div>
                 <div style="grid-column: 7/12; grid-row: 3/11; border: 1px dashed var(--clay); background: var(--paper); display: flex; justify-content: center; align-items: center; position: relative; min-height: 300px;">
@@ -624,7 +626,45 @@
             </div>
         </section>
 
-        <!-- 07. TYPOGRAPHY -->
+        <!-- 07. LOGO VARIATIONS -->
+        <section id="logo-variations" style="background-color: var(--paper);">
+            <div class="section-inner">
+                <div style="grid-column: 1/-1; grid-row: 1/2; text-align: center;">
+                    <span class="label">Logo Varyasyonları</span>
+                </div>
+                <div style="grid-column: 2/12; grid-row: 3/11; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;">
+                    <!-- Color -->
+                    <div class="card" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <svg width="150" height="150" viewBox="0 0 100 100" fill="none" stroke="var(--clay)" stroke-width="4">
+                            <path d="M50 50 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0" />
+                            <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" opacity="0.6"/>
+                            <path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" />
+                        </svg>
+                        <span class="label" style="margin-top: 30px; border: none; color: var(--clay);">Renkli (Clay)</span>
+                    </div>
+                    <!-- Black (Ink) -->
+                    <div class="card" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <svg width="150" height="150" viewBox="0 0 100 100" fill="none" stroke="var(--ink)" stroke-width="4">
+                            <path d="M50 50 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0" />
+                            <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" opacity="0.6"/>
+                            <path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" />
+                        </svg>
+                        <span class="label" style="margin-top: 30px; border: none; color: var(--ink);">Siyah (Ink)</span>
+                    </div>
+                    <!-- White (Negative) -->
+                    <div class="card" style="background-color: var(--ink); display: flex; flex-direction: column; align-items: center; justify-content: center; border: none;">
+                        <svg width="150" height="150" viewBox="0 0 100 100" fill="none" stroke="var(--white)" stroke-width="4">
+                            <path d="M50 50 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0" />
+                            <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" opacity="0.6"/>
+                            <path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" />
+                        </svg>
+                        <span class="label" style="margin-top: 30px; border: none; color: var(--white); opacity: 0.8;">Negatif (Beyaz)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 08. TYPOGRAPHY -->
         <section id="typography" style="background-color: var(--paper);">
             <div class="section-inner">
                 <div style="grid-column: 1/-1; grid-row: 1/2; text-align: center;">
@@ -639,8 +679,8 @@
                         ABCÇDEFGĞHIİ<br>JKLMNOÖPRSŞT<br>UÜVYZ
                     </div>
                     <div style="margin-top: 40px;">
-                        <span class="label">Kullanım</span>
-                        <p class="body-sm">Logo, büyük başlıklar, kısa vurgular.</p>
+                        <span class="label">Karakter</span>
+                        <p class="body-sm">Modern, akışkan ve samimi. Tornada dönen kilin yumuşaklığını yansıtır. Büyük başlıklarda kullanılır.</p>
                     </div>
                 </div>
 
@@ -652,21 +692,21 @@
                         "Kusurlu olanın<br>mükemmelliği."
                     </div>
                     <div style="margin-top: 40px;">
-                        <span class="label">Kullanım</span>
-                        <p class="body-sm">Manifesto metinleri, alıntılar, hikaye anlatımı.</p>
+                        <span class="label">Karakter</span>
+                        <p class="body-sm">Köklü, zarif ve hikaye anlatıcısı. Markanın edebi ve duygusal yönünü temsil eder.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 08. COLORS -->
+        <!-- 09. COLORS -->
         <section id="colors" style="background-color: var(--white);">
             <div class="section-inner">
                  <div style="grid-column: 2/5; grid-row: 3/10;">
                     <span class="label">04 — Renk Paleti</span>
                     <h2 class="h2">Materyal Tonları</h2>
                     <p class="body-sm">
-                        Markanın temeli açık tonlardır. Beyaz, ham kağıt ve bej, galeri hissi yaratır. Koyu tonlar sadece keskinlik vermek için kullanılır.
+                        Renk paletimiz, fırından yeni çıkmış bisküvi seramiklerin, kuruyan çamurun ve gölgeli atölye köşelerinin tonlarından ilham alır. Asla saf siyah kullanmayız; bizim karanlığımız 'Yanık Kömür'dür. Beyazımız ise steril değil, 'Alçı'nın sıcaklığıdır.
                     </p>
                 </div>
                 <div style="grid-column: 6/12; grid-row: 3/10; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
@@ -698,14 +738,14 @@
             </div>
         </section>
 
-        <!-- 09. STATIONERY -->
+        <!-- 10. STATIONERY -->
         <section id="stationery" style="background-color: var(--sand);">
             <div class="section-inner">
                 <div style="grid-column: 2/6; grid-row: 4/10; z-index: 2;">
                     <span class="label">Uygulama</span>
                     <h2 class="h2">Kurumsal Kimlik</h2>
                     <p class="body-sm">
-                        Temiz, bol boşluklu ve minimal. Kağıt dokusu hissedilmeli.
+                        Kağıdın dokusu, markanın tenidir. Kurumsal kimliğimizde mürekkep kadar, kağıdın gramajı ve dokusu da konuşur. Kabartma (gofre) teknikleri, sessiz ama hissedilir bir lüks yaratır.
                     </p>
                 </div>
                 <div style="grid-column: 6/13; grid-row: 1/-1; position: relative;">
@@ -720,14 +760,14 @@
             </div>
         </section>
 
-        <!-- 10. PACKAGING -->
+        <!-- 11. PACKAGING -->
         <section id="packaging" style="background-color: var(--white);">
             <div class="section-inner">
                 <div style="grid-column: 2/6; grid-row: 4/10;">
                     <span class="label">Ambalaj</span>
-                    <h2 class="h2">Kutu Açılışı</h2>
+                    <h2 class="h2">Kutu Açılış Ritüeli</h2>
                     <p class="body-sm">
-                        Beyaz etiketler, doğal kraft kutular üzerinde kontrast yaratır. Terracotta rengi bant veya ip ile vurgu yapılır.
+                        Kutu açılışı bir ritüeldir. Plastik gürültüsünden uzak; doğal kraft, ham keten ipler ve mum mühürler... Her paket, sahibine sunulan bir 'yavaşlama' davetiyesidir.
                     </p>
                 </div>
                  <div style="grid-column: 7/12; grid-row: 2/12; display: flex; align-items: center; justify-content: center;">
@@ -737,4 +777,101 @@
                         <!-- Sticker -->
                         <div style="background: white; padding: 30px; z-index: 2; width: 180px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
                             <div style="font-family: var(--font-display); font-weight: bold; font-size: 24px;">kilna</div>
-                            <div style="font-family: var(--font-serif); font-style: italic; font-size: 12px; margin-top: 1
+                            <div style="font-family: var(--font-serif); font-style: italic; font-size: 12px; margin-top: 10px; color: var(--ink-light);">Handmade</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 12. SOCIAL MEDIA -->
+        <section id="social" style="background-color: var(--paper);">
+            <div class="section-inner">
+                <div style="grid-column: 2/12; grid-row: 2/3; text-align: center;">
+                     <h2 class="h2">Sosyal Medya Grid</h2>
+                </div>
+                <div style="grid-column: 2/12; grid-row: 4/10; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                    <!-- Post 1 -->
+                    <div style="background: #eee; aspect-ratio: 1; overflow: hidden; position: relative;">
+                         <img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=600" class="img-cover" crossorigin="anonymous">
+                    </div>
+                    <!-- Post 2 -->
+                    <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; padding: 40px; text-align: center; border: 1px solid var(--line);">
+                        <span style="font-family: var(--font-serif); font-style: italic; color: var(--ink); font-size: 24px;">"Sabır, çamurun bize öğrettiği ilk derstir."</span>
+                    </div>
+                    <!-- Post 3 -->
+                    <div style="background: #eee; aspect-ratio: 1; overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1593106568297-5120f2b3887c?q=80&w=600" class="img-cover" crossorigin="anonymous">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 13. CONTACT -->
+        <section id="contact" style="background-color: var(--white);">
+            <div class="section-inner">
+                <div style="grid-column: 1/-1; grid-row: 1/-1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                    <div style="width: 80px; height: 80px; border: 1px solid var(--clay); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 40px; color: var(--clay);">
+                        <span style="font-family: var(--font-display); font-weight: bold; font-size: 32px;">k</span>
+                    </div>
+                    <h2 class="h1" style="font-size: 48px;">kilna</h2>
+                    <p class="body-sm" style="margin-top: 20px;">
+                        Marka varlıklarına erişim için:<br>
+                        <a href="#" style="color: var(--clay); border-bottom: 1px solid var(--clay); padding-bottom: 2px;">design@kilna.com</a>
+                    </p>
+                    <span class="label" style="margin-top: 60px; color: var(--ink-light);">© 2026 Kilna Studio</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script>
+    function scrollToSection(id) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+            // Simple active state toggle
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            if(event) event.target.classList.add('active');
+            
+            // Close sidebar on mobile after click
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
+            }
+        }
+    }
+
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('active');
+    }
+
+    function generatePDF() {
+        const element = document.getElementById('mainContent');
+        const opt = {
+            margin: 0,
+            filename: 'kilna_brand_guidelines_2026.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+        };
+
+        // Add a class to handle PDF generation styles
+        document.body.classList.add('generating-pdf');
+        
+        html2pdf().set(opt).from(element).save().then(() => {
+             document.body.classList.remove('generating-pdf');
+        }).catch(err => {
+            console.error(err);
+            document.body.classList.remove('generating-pdf');
+            // Fallback to print dialog if html2pdf fails
+            alert("İndirme başlatılamadı. Alternatif yöntem açılıyor.");
+            window.print();
+        });
+    }
+</script>
+
+</body>
+</html>
