@@ -3,875 +3,633 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kilna | Brand Portal 2026 (Light Edition)</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@200;300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- PDF Generation Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
+    <title>kilna | Brand Bible (50 Pages)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Space+Mono&family=Manrope:wght@200;300;400;500;600;700;800&family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'], 
+                        serif: ['Cormorant Garamond', 'serif'],
+                        mono: ['Space Mono', 'monospace'],
+                        brand: ['Comfortaa', 'cursive'], 
+                    },
+                    colors: {
+                        brand: {
+                            black: '#121212',
+                            gray: '#888888',
+                            light: '#F4F4F4',
+                            clay: '#C18C74',
+                            paper: '#FFFFFF' 
+                        }
+                    },
+                    spacing: {
+                        'a4w': '210mm',
+                        'a4h': '297mm',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        /* --- 1. DESIGN TOKENS (LIGHT THEME) --- */
-        :root {
-            /* Palette */
-            --ink: #1F1D1B;         /* Ana Metin Rengi */
-            --ink-light: #595552;   /* İkincil Metin */
-            --clay: #C18C74;        /* Marka Rengi */
-            --white: #FFFFFF;       /* Saf Beyaz */
-            --paper: #FAF9F6;       /* Alçı Beyazı / Sıcak Zemin */
-            --sand: #F2F0EB;        /* Kum Beji / Karton */
-            --line: rgba(31, 29, 27, 0.08); /* İnce Çizgiler */
-            
-            /* Typography */
-            --font-display: 'Comfortaa', cursive;
-            --font-serif: 'Cormorant Garamond', serif;
-            --font-sans: 'Inter', sans-serif;
-            
-            /* Layout */
-            --sidebar-width: 260px;
-            --page-padding: 80px;
-            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        /* --- 2. RESET & BASE --- */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            background-color: var(--white);
-            color: var(--ink);
-            font-family: var(--font-sans);
-            overflow: hidden; /* Scroll handled by main-content normally */
-        }
-
-        a { text-decoration: none; color: inherit; transition: color 0.3s; }
-        ul { list-style: none; }
-        button { border: none; background: none; cursor: pointer; font-family: inherit; }
-
-        /* --- 3. LAYOUT STRUCTURE --- */
-        .app-container {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
-            position: relative;
-        }
-
-        /* Mobile Header & Toggle */
-        .mobile-header {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            height: 60px;
-            background: var(--white);
-            border-bottom: 1px solid var(--line);
-            z-index: 2000;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-        }
-
-        /* Sidebar Navigation (Light) */
-        .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--white);
-            color: var(--ink);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid var(--line);
-            z-index: 100;
-            transition: transform 0.3s var(--ease-out);
-        }
-
-        .brand-header {
-            padding: 40px;
-            border-bottom: 1px solid var(--line);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .nav-scroller {
-            flex: 1;
-            overflow-y: auto;
-            padding: 40px 0;
+        /* PRINT OPTIMIZATION - CRITICAL FOR PDF */
+        :root { --page-width: 210mm; --page-height: 297mm; }
+        
+        body { 
+            background-color: #555; 
+            color: #121212;
+            -webkit-print-color-adjust: exact !important; 
+            print-color-adjust: exact !important; 
         }
         
-        .nav-scroller::-webkit-scrollbar { width: 4px; }
-        .nav-scroller::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); }
-
-        .nav-group { margin-bottom: 30px; }
-        .nav-group-title {
-            padding: 0 40px;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--clay);
-            margin-bottom: 15px;
-            font-weight: 600;
+        #book-container {
+            width: var(--page-width);
+            margin: 40px auto;
+            background: white;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
-        .nav-link {
-            display: block;
-            padding: 8px 40px;
-            font-size: 13px;
-            color: var(--ink-light);
-            transition: all 0.3s;
-            cursor: pointer;
+        .page {
+            width: var(--page-width);
+            height: var(--page-height);
+            background: white;
             position: relative;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            color: var(--ink);
-            background: var(--paper);
-            padding-left: 45px;
-        }
-        
-        .nav-link.active::before {
-            content: '';
-            position: absolute;
-            left: 30px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: var(--clay);
-        }
-
-        .sidebar-footer {
-            padding: 20px 40px;
-            font-size: 10px;
-            color: var(--ink-light);
-            border-top: 1px solid var(--line);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .btn-download {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 15px;
-            background: var(--ink);
-            color: white;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 500;
-            justify-content: center;
-            transition: background 0.3s;
-        }
-        .btn-download:hover { background: var(--clay); }
-        .btn-download i { font-size: 14px; }
-
-        /* Main Content Area */
-        .main-content {
-            flex: 1;
-            background-color: var(--paper);
-            height: 100%;
-            overflow-y: scroll;
-            scroll-behavior: smooth;
-            scroll-snap-type: y mandatory;
-            position: relative;
-            width: 100%; /* Ensure width is handled */
-        }
-
-        /* Texture Layer */
-        .texture-layer {
-            position: fixed;
-            top: 0; left: var(--sidebar-width); right: 0; bottom: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 999;
-            mix-blend-mode: multiply;
-        }
-
-        /* --- 4. SECTION STYLING --- */
-        section {
-            min-height: 100vh;
-            width: 100%;
-            scroll-snap-align: start;
-            position: relative;
-            display: flex;
             overflow: hidden;
-            border-bottom: 1px solid var(--line);
+            page-break-after: always;
+            break-after: page; /* Modern browsers */
+            border-bottom: 1px solid #eee;
         }
 
-        section:nth-child(odd) { background-color: var(--paper); }
-        section:nth-child(even) { background-color: var(--white); }
-
-        .section-inner {
-            width: 100%;
-            height: 100%;
+        /* Modern Grid Layout */
+        .grid-layout {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
-            grid-template-rows: repeat(12, 1fr);
-            gap: 20px;
-            padding: var(--page-padding);
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
-        /* Typography */
-        .h-hero { font-family: var(--font-display); font-size: 120px; line-height: 0.9; letter-spacing: -0.04em; color: var(--ink); }
-        .h1 { font-family: var(--font-serif); font-size: 64px; line-height: 1; margin-bottom: 24px; color: var(--ink); }
-        .h2 { font-family: var(--font-display); font-size: 42px; line-height: 1.1; margin-bottom: 16px; font-weight: 700; color: var(--ink); }
-        
-        .label { 
-            font-family: var(--font-sans); font-size: 10px; text-transform: uppercase; 
-            letter-spacing: 0.2em; color: var(--clay); font-weight: 600; margin-bottom: 20px; display: block; 
-        }
-        
-        .body-lg { font-size: 20px; line-height: 1.6; font-weight: 300; color: var(--ink-light); }
-        .body-sm { font-size: 14px; line-height: 1.6; color: var(--ink-light); }
-
-        .img-cover { width: 100%; height: 100%; object-fit: cover; display: block; }
-        
-        .card {
-            background: var(--white);
-            padding: 40px;
-            border: 1px solid var(--line);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
-            transition: all 0.4s var(--ease-out);
-            cursor: default;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
-            border-color: rgba(193, 140, 116, 0.3);
-        }
-
-        .logo-grid-container:hover .construction-lines { opacity: 0.4; }
-        .construction-lines { transition: opacity 0.5s; opacity: 0.1; }
-
-        .swatch {
-            aspect-ratio: 1;
-            border-radius: 50%;
-            margin-bottom: 20px;
-            cursor: pointer;
+            grid-column-gap: 4mm;
+            padding: 20mm;
+            height: 100%;
             position: relative;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            z-index: 10;
         }
+
+        h1, h2, h3, h4 { font-weight: normal; }
         
-        /* --- 5. RESPONSIVE MEDIA QUERIES --- */
-        @media (max-width: 1024px) {
-            :root { --page-padding: 40px; --sidebar-width: 240px; }
-            .h-hero { font-size: 80px; }
-            .h1 { font-size: 48px; }
+        .page-num {
+            position: absolute;
+            bottom: 15mm;
+            right: 20mm;
+            font-family: 'Space Mono', monospace;
+            font-size: 8pt;
+            color: #121212;
         }
 
-        @media (max-width: 768px) {
-            :root { --page-padding: 30px; }
-            
-            .app-container { flex-direction: column; }
-            .mobile-header { display: flex; }
-            
-            .sidebar {
-                position: fixed;
-                top: 60px; left: 0; bottom: 0;
-                width: 100%;
-                transform: translateX(-100%);
-                z-index: 1500;
-                border-right: none;
-            }
-            .sidebar.active { transform: translateX(0); }
-            
-            .main-content {
-                padding-top: 60px; /* Space for header */
-                scroll-snap-type: none; /* Disable snap on mobile for better flow */
-            }
-            
-            section {
-                height: auto;
-                min-height: auto;
-                padding-bottom: 60px;
-                overflow: visible;
-                flex-direction: column;
-            }
-            
-            .section-inner {
-                display: flex;
-                flex-direction: column;
-                padding: var(--page-padding);
-                gap: 40px;
-            }
-            
-            .texture-layer { left: 0; }
-            
-            #logo-clear .section-inner > div:nth-child(2) {
-                height: 300px;
-            }
-            
-            .h-hero { font-size: 60px; }
-            .h1 { font-size: 36px; }
-            .h2 { font-size: 28px; }
-            .body-lg { font-size: 16px; }
-            
-            #values .section-inner > div:nth-child(2),
-            #colors .section-inner > div:nth-child(2),
-            #social .section-inner > div:nth-child(2),
-            #logo-variations .section-inner > div:nth-child(2) {
-                grid-template-columns: 1fr; 
-            }
-
-            #stationery .section-inner > div:nth-child(2),
-            #packaging .section-inner > div:nth-child(2) {
-                height: 300px;
-                margin-top: 20px;
-            }
+        .chapter-mark {
+            position: absolute;
+            top: 20mm;
+            left: 20mm;
+            font-family: 'Space Mono', monospace;
+            font-size: 7pt;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transform-origin: top left;
+            transform: rotate(-90deg) translateX(-100%);
         }
 
-        /* --- 6. PRINT / PDF STYLES --- */
-        /* These styles override everything when printing or saving as PDF */
+        /* Screen Only Elements */
+        @media screen {
+            .page { margin-bottom: 20px; }
+        }
+
+        /* Print Specifics - This fixes the blank PDF issue */
         @media print {
-            @page {
-                size: A4 landscape;
-                margin: 0; /* Remove browser default margins */
+            body { background: none; margin: 0; padding: 0; }
+            #book-container { margin: 0; box-shadow: none; width: 100%; }
+            .no-print { display: none !important; }
+            .page { 
+                border-bottom: none; 
+                margin: 0; 
+                page-break-after: always;
+                break-after: page;
+                width: 100%;
+                height: 100%;
             }
-            
-            body { 
-                background-color: white !important;
-                color: black !important;
-                overflow: visible !important;
-                height: auto !important;
-                font-size: 12pt;
+            @page { 
+                size: A4; 
+                margin: 0; 
             }
-
-            /* Hide UI elements */
-            .sidebar, .mobile-header, .texture-layer, .btn-download { 
-                display: none !important; 
-            }
-
-            .app-container {
-                display: block !important;
-                height: auto !important;
-                overflow: visible !important;
-            }
-
-            .main-content {
-                width: 100% !important;
-                height: auto !important;
-                overflow: visible !important;
-                background: white !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                display: block !important;
-            }
-
-            section {
-                height: 100vh !important; /* Force each section to take a full page */
-                width: 100% !important;
-                page-break-after: always !important;
-                break-after: page !important;
-                border-bottom: none !important;
-                background-color: white !important;
-                display: block !important;
-                position: relative !important;
-                overflow: hidden !important; /* Keep content within page */
-            }
-
-            .section-inner {
-                height: 100% !important;
-                display: grid !important;
-                grid-template-columns: repeat(12, 1fr) !important;
-                grid-template-rows: repeat(12, 1fr) !important;
-                padding: 40px !important; /* Print margin */
-                gap: 20px !important;
-            }
-
-            /* Fix Colors for Print */
-            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            
-            .card { box-shadow: none !important; border: 1px solid #ccc !important; }
-            .logo-grid-container .construction-lines { opacity: 0.3 !important; }
-        }
-
-        /* Helper class for html2pdf temporary styling */
-        body.generating-pdf .sidebar, 
-        body.generating-pdf .mobile-header, 
-        body.generating-pdf .btn-download {
-            display: none !important;
-        }
-        body.generating-pdf .main-content {
-            width: 100% !important;
-            overflow: visible !important;
-            height: auto !important;
-        }
-        body.generating-pdf section {
-            height: 1123px !important; /* A4 height in pixels approx @ 96dpi is different, but for html2pdf usually best to let it flow or force height */
-            page-break-after: always;
         }
     </style>
 </head>
 <body>
 
-<div class="mobile-header">
-    <div style="display: flex; align-items: center; gap: 10px;">
-        <svg width="24" height="24" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6">
-            <path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" />
-            <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" opacity="0.6"/>
-        </svg>
-        <span style="font-family: var(--font-display); font-weight: 700; font-size: 18px;">kilna</span>
-    </div>
-    <button onclick="toggleSidebar()" style="font-size: 20px; color: var(--ink);">
-        <i class="fa-solid fa-bars"></i>
-    </button>
-</div>
-
-<div class="app-container">
-    
-    <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
-        <div class="brand-header">
-            <svg width="30" height="30" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6">
-                <path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" />
-                <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" opacity="0.6"/>
-            </svg>
-            <span style="font-family: var(--font-display); font-weight: 700;">kilna</span>
-        </div>
-
-        <nav class="nav-scroller">
-            <div class="nav-group">
-                <div class="nav-group-title">Giriş</div>
-                <a class="nav-link active" onclick="scrollToSection('cover')">Kapak</a>
-                <a class="nav-link" onclick="scrollToSection('manifesto')">Manifesto</a>
-                <a class="nav-link" onclick="scrollToSection('values')">Değerler</a>
-            </div>
-
-            <div class="nav-group">
-                <div class="nav-group-title">Temel Unsurlar</div>
-                <a class="nav-link" onclick="scrollToSection('logo-primary')">Logo: Birincil</a>
-                <a class="nav-link" onclick="scrollToSection('logo-grid')">Logo: Anatomi</a>
-                <a class="nav-link" onclick="scrollToSection('logo-clear')">Logo: Güvenli Alan</a>
-                <a class="nav-link" onclick="scrollToSection('logo-variations')">Logo: Varyasyonlar</a>
-                <a class="nav-link" onclick="scrollToSection('typography')">Tipografi</a>
-                <a class="nav-link" onclick="scrollToSection('colors')">Renk Paleti</a>
-            </div>
-
-             <div class="nav-group">
-                <div class="nav-group-title">Uygulamalar</div>
-                <a class="nav-link" onclick="scrollToSection('stationery')">Kurumsal Kimlik</a>
-                <a class="nav-link" onclick="scrollToSection('packaging')">Ambalaj</a>
-                <a class="nav-link" onclick="scrollToSection('social')">Sosyal Medya</a>
-            </div>
-            
-            <div class="nav-group">
-                <div class="nav-group-title">Bitiş</div>
-                <a class="nav-link" onclick="scrollToSection('contact')">İletişim</a>
-            </div>
-        </nav>
-
-        <div class="sidebar-footer">
-            <button class="btn-download" onclick="generatePDF()">
-                <i class="fa-solid fa-file-arrow-down"></i>
-                PDF Olarak İndir
+    <!-- Controls -->
+    <div class="fixed top-6 right-6 z-50 no-print flex flex-col gap-3 items-end">
+        <div class="bg-brand-black text-white px-6 py-6 rounded-xl shadow-2xl flex flex-col items-end gap-3 border border-gray-700 max-w-sm">
+            <h3 class="font-bold text-lg text-brand-clay">PDF İndirme Rehberi</h3>
+            <ol class="text-xs text-gray-300 space-y-2 list-decimal list-inside text-right font-mono">
+                <li>Aşağıdaki butona basın.</li>
+                <li>Hedef Yazıcıyı <strong>"PDF Olarak Kaydet"</strong> seçin.</li>
+                <li>Diğer Ayarlar > <strong>"Arka Plan Grafikleri"</strong>ni işaretleyin.</li>
+            </ol>
+            <button onclick="window.print()" class="w-full mt-2 font-sans font-bold text-sm bg-brand-clay hover:bg-white hover:text-brand-black transition-colors px-6 py-3 rounded-lg flex items-center justify-center gap-2">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 15l0 -9M12 15l-4 -4M12 15l4 -4M4 19h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                PDF OLARAK KAYDET / YAZDIR
             </button>
-            <div style="opacity: 0.5; margin-top: 10px;">
-                v3.6 • Light Edition<br>
-                Kilna Internal Use
-            </div>
         </div>
-    </aside>
+    </div>
 
-    <!-- CONTENT -->
-    <main class="main-content" id="mainContent">
-        <div class="texture-layer"></div>
+    <!-- THE BOOK CONTAINER -->
+    <div id="book-container">
 
-        <!-- 01. COVER -->
-        <section id="cover" style="background-color: var(--paper);">
-            <div class="section-inner">
-                <div style="grid-column: 1/-1; grid-row: 1/-1; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1; text-align: center;">
-                    <span class="label" style="border: 1px solid var(--clay); padding: 8px 20px; border-radius: 50px; margin-bottom: 40px; background: white;">Brand Guidelines 2026</span>
-                    <h1 class="h-hero">kilna</h1>
-                    <p class="h1" style="font-style: italic; font-size: 32px; margin-top: 20px; color: var(--ink-light);">Kusurların içindeki mükemmel denge.</p>
-                </div>
-                <!-- Subtle Background Element -->
-                <div style="position: absolute; right: -5%; bottom: -10%; opacity: 0.1;">
-                     <svg width="600" height="600" viewBox="0 0 100 100" fill="none" stroke="var(--clay)" stroke-width="0.5">
-                        <path d="M50 50 m -45 0 a 45 45 0 1 0 90 0 a 45 45 0 1 0 -90 0" />
-                        <path d="M50 50 m -35 0 a 35 35 0 1 0 70 0 a 35 35 0 1 0 -70 0" opacity="0.6"/>
-                        <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" opacity="0.3"/>
-                    </svg>
-                </div>
-            </div>
-        </section>
-
-        <!-- 02. MANIFESTO -->
-        <section id="manifesto" style="background-color: var(--white);">
-            <div class="section-inner">
-                <div style="grid-column: 1/7; grid-row: 1/-1; position: relative; padding: 40px 0;">
-                    <div style="width: 100%; height: 100%; overflow: hidden; border-radius: 4px; min-height: 300px;">
-                        <img src="https://images.unsplash.com/photo-1493106641515-6b5631de4bb9?q=80&w=1000&auto=format&fit=crop" class="img-cover" style="filter: grayscale(100%) brightness(1.1) contrast(0.9);" crossorigin="anonymous">
+        <!-- P01: COVER -->
+        <div class="page">
+            <div class="grid-layout">
+                <div class="col-span-12 flex flex-col justify-between h-full">
+                    <div class="mt-[80mm]">
+                        <h1 class="font-brand font-bold text-[100px] leading-[0.8] -ml-2 tracking-tight lowercase">kilna</h1>
+                        <p class="font-serif italic text-2xl mt-4 text-gray-500">Curated Ceramic Marketplace</p>
                     </div>
-                </div>
-                <div style="grid-column: 7/13; grid-row: 1/-1; padding-left: 40px; display: flex; flex-direction: column; justify-content: center;">
-                    <span class="label">Manifesto</span>
-                    <h2 class="h1">Toprağın Sessiz<br>Hafızası.</h2>
-                    <p class="body-lg" style="margin-bottom: 30px; color: var(--ink);">
-                        Hızın ve seri üretimin hüküm sürdüğü bir çağda, Kilna bir duraksamadır. Biz, makinenin soğuk kusursuzluğuna karşı, insan elinin sıcak hatasını ve toprağın kadim hafızasını savunuyoruz.
-                    </p>
-                    <p class="body-sm">
-                        Her çatlak bir yaşanmışlık, her ton farkı doğanın eşsiz imzasıdır. Tasarımlarımızda 'boşluğun' gücüne inanır; nesneleri değil, o nesnelerin yarattığı dingin anları tasarlarız. Hikayemiz toprağın sabrıyla başlar, sofranızdaki huzurla tamamlanır.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 03. VALUES -->
-        <section id="values" style="background-color: var(--paper);">
-            <div class="section-inner">
-                <div style="grid-column: 2/12; grid-row: 2/3; text-align: center;">
-                    <h2 class="h2">Marka Değerleri</h2>
-                </div>
-                <div style="grid-column: 2/12; grid-row: 4/10; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;">
-                    <!-- Card 1 -->
-                    <div class="card">
-                        <span class="label">01</span>
-                        <h3 class="h1" style="font-size: 32px; font-style: italic; margin-bottom: 20px;">Wabi-Sabi</h3>
-                        <p class="body-sm">Zamanın ve yaşanmışlığın izlerini kutsamak. Geçici, eksik ve kusurlu olanın içindeki derin estetiği görebilmek.</p>
-                    </div>
-                    <!-- Card 2 -->
-                    <div class="card" style="background: var(--ink); color: white;">
-                        <span class="label" style="color: var(--clay);">02</span>
-                        <h3 class="h1" style="font-size: 32px; font-style: italic; margin-bottom: 20px; color: white;">El İzi</h3>
-                        <p class="body-sm" style="color: rgba(255,255,255,0.7);">Endüstriyel mükemmellik yerine, zanaatkarın ruhunu taşıyan dokunuşlar. Her parça, parmak uçlarında şekillenen bir diyaloğun ürünüdür.</p>
-                    </div>
-                    <!-- Card 3 -->
-                    <div class="card">
-                        <span class="label">03</span>
-                        <h3 class="h1" style="font-size: 32px; font-style: italic; margin-bottom: 20px;">Döngü</h3>
-                        <p class="body-sm">Topraktan geleni, özüne sadık kalarak şekillendirmek. Doğayı tüketmeden, onunla uyum içinde, etik ve yavaş bir üretim anlayışı.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 04. LOGO PRIMARY -->
-        <section id="logo-primary" style="background-color: var(--white);">
-            <div class="section-inner">
-                <div style="grid-column: 1/-1; grid-row: 1/-1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                    <span class="label">Birincil Logo</span>
-                    <div style="margin-top: 40px; text-align: center;">
-                        <svg width="300" height="300" viewBox="0 0 100 100" fill="none" stroke="var(--ink)" stroke-width="3" style="max-width: 100%;">
-                            <path d="M50 50 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0" />
-                            <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" opacity="0.6"/>
-                            <path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" />
-                        </svg>
-                        <h1 class="h-hero" style="font-size: 100px; margin-top: 20px;">kilna</h1>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 05. LOGO ANATOMY -->
-        <section id="logo-grid" style="background-color: var(--paper);">
-            <div class="section-inner logo-grid-container">
-                <div style="grid-column: 2/6; grid-row: 4/10;">
-                    <span class="label">Logo Anatomisi</span>
-                    <h2 class="h2">Altın Oran &<br>Merkezkaç.</h2>
-                    <p class="body-sm" style="margin-top: 20px;">
-                        Sembolümüz, rastlantısal bir form değil; evrensel bir dengenin izdüşümüdür. Çömlekçi tornasının merkezkaç kuvveti ile doğadaki büyüme spiralleri (Fibonacci) bu formda birleşir. Sabit bir merkez etrafında dönen kilin, ellerin arasından yükselişini simgeler.
-                    </p>
-                    <div style="margin-top: 40px; padding: 20px; border: 1px solid var(--line); background: white;">
-                        <span class="label" style="margin-bottom: 5px;">İpucu</span>
-                        <p class="body-sm" style="font-size: 12px;">Görselin üzerine gelerek ızgara sistemini görebilirsiniz.</p>
-                    </div>
-                </div>
-                <div style="grid-column: 7/12; grid-row: 2/12; display: flex; align-items: center; justify-content: center;">
-                    <svg width="500" height="500" viewBox="0 0 100 100" fill="none" stroke="var(--ink)" stroke-width="1" style="max-width: 100%;">
-                        <!-- Construction Lines -->
-                        <g class="construction-lines" stroke="var(--clay)" stroke-opacity="1" stroke-dasharray="0.5 1">
-                            <line x1="50" y1="0" x2="50" y2="100"/>
-                            <line x1="0" y1="50" x2="100" y2="50"/>
-                            <rect x="10" y="10" width="80" height="80"/>
-                            <circle cx="50" cy="50" r="10"/>
-                            <circle cx="50" cy="50" r="25"/>
-                            <circle cx="50" cy="50" r="40"/>
-                            <line x1="0" y1="0" x2="100" y2="100" opacity="0.3"/>
-                            <line x1="100" y1="0" x2="0" y2="100" opacity="0.3"/>
-                        </g>
-                        <!-- Logo -->
-                        <path d="M50 50 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0" stroke-width="2"/>
-                        <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" stroke-width="2"/>
-                        <path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" stroke-width="2"/>
-                    </svg>
-                </div>
-            </div>
-        </section>
-
-        <!-- 06. CLEAR SPACE -->
-        <section id="logo-clear" style="background-color: var(--white);">
-            <div class="section-inner">
-                 <div style="grid-column: 2/6; grid-row: 4/10;">
-                    <span class="label">Koruma Alanı</span>
-                    <h2 class="h2">Logoya Nefes Aldırın.</h2>
-                    <p class="body-sm">
-                        Boşluk, tasarımın sessizliğidir. Logomuzun çevresindeki koruma alanı (x), markanın dingin duruşunu korumak için hayati önem taşır. Bu alan, gürültüden arındırılmış bir nefes payıdır. (x = 'k' harfinin yüksekliği)
-                    </p>
-                </div>
-                <div style="grid-column: 7/12; grid-row: 3/11; border: 1px dashed var(--clay); background: var(--paper); display: flex; justify-content: center; align-items: center; position: relative; min-height: 300px;">
-                    <!-- X indicators -->
-                    <div style="position: absolute; top: 20px; left: 20px; color: var(--clay); font-weight: bold; font-family: var(--font-sans);">x</div>
-                    <div style="position: absolute; bottom: 20px; right: 20px; color: var(--clay); font-weight: bold; font-family: var(--font-sans);">x</div>
-                    
-                    <div style="text-align: center;">
-                        <svg width="150" height="150" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4">
-                            <path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" />
-                            <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" />
-                        </svg>
-                        <h2 class="h2" style="margin: 10px 0 0 0;">kilna</h2>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 07. LOGO VARIATIONS -->
-        <section id="logo-variations" style="background-color: var(--paper);">
-            <div class="section-inner">
-                <div style="grid-column: 1/-1; grid-row: 1/2; text-align: center;">
-                    <span class="label">Logo Varyasyonları</span>
-                </div>
-                <div style="grid-column: 2/12; grid-row: 3/11; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;">
-                    <!-- Color -->
-                    <div class="card" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                        <svg width="150" height="150" viewBox="0 0 100 100" fill="none" stroke="var(--clay)" stroke-width="4">
-                            <path d="M50 50 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0" />
-                            <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" opacity="0.6"/>
-                            <path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" />
-                        </svg>
-                        <span class="label" style="margin-top: 30px; border: none; color: var(--clay);">Renkli (Clay)</span>
-                    </div>
-                    <!-- Black (Ink) -->
-                    <div class="card" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                        <svg width="150" height="150" viewBox="0 0 100 100" fill="none" stroke="var(--ink)" stroke-width="4">
-                            <path d="M50 50 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0" />
-                            <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" opacity="0.6"/>
-                            <path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" />
-                        </svg>
-                        <span class="label" style="margin-top: 30px; border: none; color: var(--ink);">Siyah (Ink)</span>
-                    </div>
-                    <!-- White (Negative) -->
-                    <div class="card" style="background-color: var(--ink); display: flex; flex-direction: column; align-items: center; justify-content: center; border: none;">
-                        <svg width="150" height="150" viewBox="0 0 100 100" fill="none" stroke="var(--white)" stroke-width="4">
-                            <path d="M50 50 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0" />
-                            <path d="M50 50 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0" opacity="0.6"/>
-                            <path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" />
-                        </svg>
-                        <span class="label" style="margin-top: 30px; border: none; color: var(--white); opacity: 0.8;">Negatif (Beyaz)</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 08. TYPOGRAPHY -->
-        <section id="typography" style="background-color: var(--paper);">
-            <div class="section-inner">
-                <div style="grid-column: 1/-1; grid-row: 1/2; text-align: center;">
-                    <span class="label">03 — Tipografi</span>
-                </div>
-                
-                <!-- Primary -->
-                <div style="grid-column: 2/6; grid-row: 3/11; border-right: 1px solid var(--line); padding-right: 40px; border-right-style: solid; border-right-width: 1px;">
-                    <span class="label">Display Font</span>
-                    <h2 style="font-family: var(--font-display); font-size: 60px;">Comfortaa</h2>
-                    <div style="font-family: var(--font-display); font-size: 24px; margin-top: 30px; line-height: 1.6; opacity: 0.7;">
-                        ABCÇDEFGĞHIİ<br>JKLMNOÖPRSŞT<br>UÜVYZ
-                    </div>
-                    <div style="margin-top: 40px;">
-                        <span class="label">Karakter</span>
-                        <p class="body-sm">Modern, akışkan ve samimi. Tornada dönen kilin yumuşaklığını yansıtır. Büyük başlıklarda kullanılır.</p>
-                    </div>
-                </div>
-
-                <!-- Secondary -->
-                <div style="grid-column: 7/11; grid-row: 3/11;">
-                    <span class="label">Editorial Font</span>
-                    <h2 style="font-family: var(--font-serif); font-size: 60px; font-style: italic;">Cormorant</h2>
-                    <div style="font-family: var(--font-serif); font-size: 24px; margin-top: 30px; line-height: 1.6; opacity: 0.7; font-style: italic;">
-                        "Kusurlu olanın<br>mükemmelliği."
-                    </div>
-                    <div style="margin-top: 40px;">
-                        <span class="label">Karakter</span>
-                        <p class="body-sm">Köklü, zarif ve hikaye anlatıcısı. Markanın edebi ve duygusal yönünü temsil eder.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 09. COLORS -->
-        <section id="colors" style="background-color: var(--white);">
-            <div class="section-inner">
-                 <div style="grid-column: 2/5; grid-row: 3/10;">
-                    <span class="label">04 — Renk Paleti</span>
-                    <h2 class="h2">Materyal Tonları</h2>
-                    <p class="body-sm">
-                        Renk paletimiz, fırından yeni çıkmış bisküvi seramiklerin, kuruyan çamurun ve gölgeli atölye köşelerinin tonlarından ilham alır. Asla saf siyah kullanmayız; bizim karanlığımız 'Yanık Kömür'dür. Beyazımız ise steril değil, 'Alçı'nın sıcaklığıdır.
-                    </p>
-                </div>
-                <div style="grid-column: 6/12; grid-row: 3/10; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
-                    <!-- Paper (Main) -->
-                    <div style="text-align: center;">
-                        <div class="swatch" style="background: var(--paper); border: 1px solid var(--line);"></div>
-                        <div style="font-weight: bold;">Alçı</div>
-                        <div class="label" style="margin-top: 5px;">#FAF9F6</div>
-                    </div>
-                    <!-- Sand -->
-                    <div style="text-align: center;">
-                        <div class="swatch" style="background: var(--sand); border: 1px solid var(--line);"></div>
-                        <div style="font-weight: bold;">Kum</div>
-                        <div class="label" style="margin-top: 5px;">#F2F0EB</div>
-                    </div>
-                    <!-- Clay -->
-                    <div style="text-align: center;">
-                        <div class="swatch" style="background: var(--clay);"></div>
-                        <div style="font-weight: bold;">Terracotta</div>
-                        <div class="label" style="margin-top: 5px;">#C18C74</div>
-                    </div>
-                     <!-- Ink -->
-                    <div style="text-align: center;">
-                        <div class="swatch" style="background: var(--ink);"></div>
-                        <div style="font-weight: bold;">Kömür</div>
-                        <div class="label" style="margin-top: 5px;">#1F1D1B</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 10. STATIONERY -->
-        <section id="stationery" style="background-color: var(--sand);">
-            <div class="section-inner">
-                <div style="grid-column: 2/6; grid-row: 4/10; z-index: 2;">
-                    <span class="label">Uygulama</span>
-                    <h2 class="h2">Kurumsal Kimlik</h2>
-                    <p class="body-sm">
-                        Kağıdın dokusu, markanın tenidir. Kurumsal kimliğimizde mürekkep kadar, kağıdın gramajı ve dokusu da konuşur. Kabartma (gofre) teknikleri, sessiz ama hissedilir bir lüks yaratır.
-                    </p>
-                </div>
-                <div style="grid-column: 6/13; grid-row: 1/-1; position: relative;">
-                    <!-- Mockup Composition -->
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-5deg); width: 300px; height: 180px; background: white; box-shadow: 0 30px 60px rgba(0,0,0,0.1); padding: 30px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px solid rgba(0,0,0,0.05);">
-                         <svg width="40" height="40" viewBox="0 0 100 100" fill="none" stroke="var(--ink)" stroke-width="4"><path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" /></svg>
-                         <div style="font-family: var(--font-display); font-weight: bold; color: var(--ink); margin-top: 30px; font-size: 14px;">kilna studio</div>
-                    </div>
-                    <!-- Envelope -->
-                    <div style="position: absolute; top: 45%; left: 55%; transform: translate(-50%, -50%) rotate(5deg); width: 350px; height: 250px; background: #E5E2DC; box-shadow: 0 20px 40px rgba(0,0,0,0.05); z-index: -1;"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 11. PACKAGING -->
-        <section id="packaging" style="background-color: var(--white);">
-            <div class="section-inner">
-                <div style="grid-column: 2/6; grid-row: 4/10;">
-                    <span class="label">Ambalaj</span>
-                    <h2 class="h2">Kutu Açılış Ritüeli</h2>
-                    <p class="body-sm">
-                        Kutu açılışı bir ritüeldir. Plastik gürültüsünden uzak; doğal kraft, ham keten ipler ve mum mühürler... Her paket, sahibine sunulan bir 'yavaşlama' davetiyesidir.
-                    </p>
-                </div>
-                 <div style="grid-column: 7/12; grid-row: 2/12; display: flex; align-items: center; justify-content: center;">
-                    <div style="width: 350px; height: 350px; background: #DBCBB9; box-shadow: 0 30px 60px rgba(0,0,0,0.1); position: relative; display: flex; align-items: center; justify-content: center;">
-                        <!-- Tape -->
-                        <div style="position: absolute; width: 100%; height: 50px; background: var(--clay); transform: rotate(-5deg); opacity: 0.9;"></div>
-                        <!-- Sticker -->
-                        <div style="background: white; padding: 30px; z-index: 2; width: 180px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
-                            <div style="font-family: var(--font-display); font-weight: bold; font-size: 24px;">kilna</div>
-                            <div style="font-family: var(--font-serif); font-style: italic; font-size: 12px; margin-top: 10px; color: var(--ink-light);">Handmade</div>
+                    <div class="border-t border-black pt-6 flex justify-between items-end font-mono text-xs">
+                        <div>
+                            <span class="block text-gray-400 mb-1">DOKÜMAN</span>
+                            Brand Bible<br>Volume 01
+                        </div>
+                        <div class="text-right">
+                            <span class="block text-gray-400 mb-1">KATEGORİ</span>
+                            E-Commerce
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- 12. SOCIAL MEDIA -->
-        <section id="social" style="background-color: var(--paper);">
-            <div class="section-inner">
-                <div style="grid-column: 2/12; grid-row: 2/3; text-align: center;">
-                     <h2 class="h2">Sosyal Medya Grid</h2>
+        <!-- P02: INDEX -->
+        <div class="page">
+            <div class="grid-layout content-center">
+                <div class="col-span-12 mb-12 border-b border-black pb-4">
+                    <h2 class="font-serif text-4xl italic">İçindekiler</h2>
                 </div>
-                <div style="grid-column: 2/12; grid-row: 4/10; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-                    <!-- Post 1 -->
-                    <div style="background: #eee; aspect-ratio: 1; overflow: hidden; position: relative;">
-                         <img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=600" class="img-cover" crossorigin="anonymous">
-                    </div>
-                    <!-- Post 2 -->
-                    <div style="background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; padding: 40px; text-align: center; border: 1px solid var(--line);">
-                        <span style="font-family: var(--font-serif); font-style: italic; color: var(--ink); font-size: 24px;">"Sabır, çamurun bize öğrettiği ilk derstir."</span>
-                    </div>
-                    <!-- Post 3 -->
-                    <div style="background: #eee; aspect-ratio: 1; overflow: hidden;">
-                        <img src="https://images.unsplash.com/photo-1593106568297-5120f2b3887c?q=80&w=600" class="img-cover" crossorigin="anonymous">
-                    </div>
+                <div class="col-span-6 space-y-2 font-mono text-xs">
+                    <div class="flex justify-between border-b border-gray-100 py-2"><span>01. Manifesto</span><span>03</span></div>
+                    <div class="flex justify-between border-b border-gray-100 py-2"><span>02. Marka Özü</span><span>05</span></div>
+                    <div class="flex justify-between border-b border-gray-100 py-2"><span>03. Logo Sistemi</span><span>08</span></div>
+                    <div class="flex justify-between border-b border-gray-100 py-2"><span>04. Renk Paleti</span><span>15</span></div>
+                    <div class="flex justify-between border-b border-gray-100 py-2"><span class="font-bold text-brand-clay">05. Tipografi (Font Ailesi)</span><span>18</span></div>
                 </div>
-            </div>
-        </section>
-
-        <!-- 13. CONTACT -->
-        <section id="contact" style="background-color: var(--white);">
-            <div class="section-inner">
-                <div style="grid-column: 1/-1; grid-row: 1/-1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
-                    <div style="width: 80px; height: 80px; border: 1px solid var(--clay); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 40px; color: var(--clay);">
-                        <span style="font-family: var(--font-display); font-weight: bold; font-size: 32px;">k</span>
-                    </div>
-                    <h2 class="h1" style="font-size: 48px;">kilna</h2>
-                    <p class="body-sm" style="margin-top: 20px;">
-                        Marka varlıklarına erişim için:<br>
-                        <a href="#" style="color: var(--clay); border-bottom: 1px solid var(--clay); padding-bottom: 2px;">design@kilna.com</a>
-                    </p>
-                    <span class="label" style="margin-top: 60px; color: var(--ink-light);">© 2026 Kilna Studio</span>
+                <div class="col-span-6 space-y-2 font-mono text-xs pl-8">
+                    <div class="flex justify-between border-b border-gray-100 py-2"><span>06. Kurumsal Evrak</span><span>26</span></div>
+                    <div class="flex justify-between border-b border-gray-100 py-2"><span>07. Ambalaj</span><span>31</span></div>
+                    <div class="flex justify-between border-b border-gray-100 py-2"><span>08. Ürünler</span><span>39</span></div>
+                    <div class="flex justify-between border-b border-gray-100 py-2"><span>09. Dijital</span><span>43</span></div>
+                    <div class="flex justify-between border-b border-gray-100 py-2"><span>10. İletişim</span><span>51</span></div>
                 </div>
             </div>
-        </section>
+            <div class="page-num">02</div>
+        </div>
 
-    </main>
-</div>
+        <!-- P03: MANIFESTO -->
+        <div class="page bg-[#121212] text-white">
+            <div class="grid-layout items-center">
+                <div class="col-span-10 col-start-2 text-center">
+                    <p class="font-mono text-xs text-brand-clay mb-8 tracking-widest">MANIFESTO</p>
+                    <h2 class="font-serif text-4xl leading-relaxed">
+                        "Kusurlulukta mükemmelliği arıyoruz. <br>
+                        Makinelerin soğukluğuna karşı,<br>
+                        insan elinin sıcaklığını koyuyoruz."
+                    </h2>
+                </div>
+            </div>
+            <div class="page-num text-gray-500">03</div>
+        </div>
 
-<script>
-    function scrollToSection(id) {
-        const element = document.getElementById(id);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-            // Simple active state toggle
-            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-            if(event) event.target.classList.add('active');
-            
-            // Close sidebar on mobile after click
-            if (window.innerWidth <= 768) {
-                toggleSidebar();
-            }
-        }
-    }
+        <!-- JS GENERATOR LOOP -->
+        <script>
+            const book = document.getElementById('book-container');
+            let currentPageNum = 4;
 
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.toggle('active');
-    }
+            const createPage = (title, content, bgClass = '') => {
+                const div = document.createElement('div');
+                div.className = `page ${bgClass}`;
+                div.innerHTML = `
+                    <div class="chapter-mark ${bgClass.includes('bg-[#') ? 'text-white/50' : ''}">${title}</div>
+                    <div class="grid-layout">
+                        <div class="col-span-12 pt-[40mm]">
+                            ${content}
+                        </div>
+                    </div>
+                    <div class="page-num ${bgClass.includes('bg-[#') ? 'text-white/50' : ''}">${currentPageNum.toString().padStart(2, '0')}</div>
+                `;
+                currentPageNum++;
+                return div;
+            };
 
-    function generatePDF() {
-        const element = document.getElementById('mainContent');
-        const opt = {
-            margin: 0,
-            filename: 'kilna_brand_guidelines_2026.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true, letterRendering: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
-        };
+            // --- STRATEJİ ---
+            book.appendChild(createPage('01. STRATEJİ', `
+                <h3 class="font-sans font-bold text-6xl mb-8">Hikaye.</h3>
+                <div class="grid grid-cols-2 gap-8 text-sm leading-relaxed text-gray-600 font-serif">
+                    <p>Kilna, adını seramik fırınından alır. Ancak biz tek bir atölye değil, koca bir ekosistemiz. Türkiye'nin dört bir yanındaki yetenekli zanaatkarları tek bir dijital çatıda buluşturuyoruz.</p>
+                    <p>Biz bir üretici değil, seçiciyiz (curator). Geleneksel zanaat ile modern tasarımı birleştiren, yavaş yaşamı destekleyen objeleri sizin için keşfediyoruz.</p>
+                </div>
+            `));
 
-        // Add a class to handle PDF generation styles
-        document.body.classList.add('generating-pdf');
-        
-        html2pdf().set(opt).from(element).save().then(() => {
-             document.body.classList.remove('generating-pdf');
-        }).catch(err => {
-            console.error(err);
-            document.body.classList.remove('generating-pdf');
-            // Fallback to print dialog if html2pdf fails
-            alert("İndirme başlatılamadı. Alternatif yöntem açılıyor.");
-            window.print();
-        });
-    }
-</script>
+            book.appendChild(createPage('01. STRATEJİ', `
+                <h3 class="font-sans font-bold text-6xl mb-8">Değerler.</h3>
+                <div class="space-y-8 mt-12">
+                    <div class="border-t border-black pt-4"><span class="font-mono text-xs">01</span><h4 class="font-serif text-2xl italic">Kürasyon (Seçki)</h4></div>
+                    <div class="border-t border-black pt-4"><span class="font-mono text-xs">02</span><h4 class="font-serif text-2xl italic">Zanaatkar Desteği</h4></div>
+                    <div class="border-t border-black pt-4"><span class="font-mono text-xs">03</span><h4 class="font-serif text-2xl italic">Şeffaf E-Ticaret</h4></div>
+                </div>
+            `));
+
+            book.appendChild(createPage('01. STRATEJİ', `
+                <h3 class="font-sans font-bold text-6xl mb-8">Arketip.</h3>
+                <div class="bg-gray-100 p-12 text-center mt-12">
+                    <span class="font-mono text-xs">KEŞİFÇİ & HAMİ</span>
+                    <p class="font-serif italic text-3xl mt-4">"En iyiyi arayan, ustayı koruyan."</p>
+                </div>
+            `));
+
+            book.appendChild(createPage('01. STRATEJİ', `
+                <h3 class="font-sans font-bold text-6xl mb-8">Hedef Kitle.</h3>
+                <div class="grid grid-cols-2 gap-8 mt-12">
+                    <div class="p-8 border border-gray-200">
+                        <h4 class="font-bold mb-2">Persona A: Zeynep</h4>
+                        <p class="text-xs text-gray-500">Mimar, 34, İstanbul</p>
+                        <p class="mt-4 text-sm">Online alışverişte "hikaye" arıyor. Kitlesel üretimden kaçıyor.</p>
+                    </div>
+                    <div class="p-8 border border-gray-200">
+                        <h4 class="font-bold mb-2">Persona B: Can</h4>
+                        <p class="text-xs text-gray-500">Yazılımcı, 29, İzmir</p>
+                        <p class="mt-4 text-sm">Pratik ve kaliteli. Güvenilir teslimat, iyi paketleme ve küratörlü seçimler onun için zaman tasarrufu demek.</p>
+                    </div>
+                </div>
+            `));
+
+            // --- KİMLİK: LOGO ---
+            book.appendChild(createPage('02. KİMLİK', `
+                <div class="h-full flex flex-col justify-center items-center">
+                    <div class="w-64 h-64 text-brand-clay mb-8">
+                        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"><path d="M50 50 m 0 0 l 0 0" stroke-width="6" /><path d="M50 50 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0" opacity="0.4" /><path d="M50 50 m -26 0 a 26 26 0 1 0 52 0 a 26 26 0 1 0 -52 0" opacity="0.7" /><path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" /></svg>
+                    </div>
+                    <h1 class="font-brand font-bold text-8xl lowercase">kilna</h1>
+                </div>
+            `));
+
+            book.appendChild(createPage('02. KİMLİK', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Logotype.</h3>
+                <div class="space-y-12">
+                    <div>
+                        <span class="block font-mono text-xs mb-2 text-gray-400">PRIMARY</span>
+                        <h2 class="font-brand font-bold text-8xl lowercase">kilna</h2>
+                    </div>
+                    <div>
+                        <span class="block font-mono text-xs mb-2 text-gray-400">STACKED</span>
+                        <h2 class="font-brand font-bold text-6xl leading-none lowercase">kil<br>na</h2>
+                    </div>
+                </div>
+            `));
+
+            book.appendChild(createPage('02. KİMLİK', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Konstrüksiyon.</h3>
+                <div class="border border-gray-200 aspect-square relative flex items-center justify-center">
+                    <div class="absolute inset-0 grid grid-cols-10 grid-rows-10 opacity-10"><div class="border border-black"></div></div>
+                    <div class="w-64 h-64 border border-blue-500 rounded-full opacity-50 flex items-center justify-center">
+                        <div class="w-48 h-48 border border-blue-500 rounded-full"></div>
+                    </div>
+                </div>
+            `));
+
+            book.appendChild(createPage('02. KİMLİK', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Güvenli Alan.</h3>
+                <div class="bg-gray-50 p-20 flex justify-center relative">
+                    <div class="absolute top-8 left-1/2 -translate-x-1/2 font-mono text-blue-500">X</div>
+                    <div class="border border-dashed border-blue-300 p-12">
+                        <span class="font-brand font-bold text-6xl lowercase">kilna</span>
+                    </div>
+                </div>
+            `));
+
+            book.appendChild(createPage('02. KİMLİK', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Minimum Boyut.</h3>
+                <div class="grid grid-cols-2 gap-12">
+                    <div><h4 class="font-bold mb-4">Baskı</h4><div class="h-px bg-black w-8 mb-2"></div><span class="text-xs">25mm</span></div>
+                    <div><h4 class="font-bold mb-4">Dijital</h4><div class="h-px bg-black w-24 mb-2"></div><span class="text-xs">90px</span></div>
+                </div>
+            `));
+
+            book.appendChild(createPage('02. KİMLİK', `
+                <h3 class="font-sans font-bold text-4xl mb-12 text-red-500">Yanlışlar.</h3>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div class="bg-gray-100 p-8 text-red-500 relative"><span class="absolute top-2 left-2">✕</span><span class="font-brand font-bold text-4xl uppercase">KILNA</span></div>
+                    <div class="bg-gray-100 p-8 text-red-500 relative"><span class="absolute top-2 left-2">✕</span><span class="font-brand font-bold text-4xl lowercase rotate-12 inline-block">kilna</span></div>
+                    <div class="bg-gray-100 p-8 text-red-500 relative"><span class="absolute top-2 left-2">✕</span><span class="font-brand font-bold text-4xl lowercase text-blue-600">kilna</span></div>
+                    <div class="bg-gray-100 p-8 text-red-500 relative"><span class="absolute top-2 left-2">✕</span><span class="font-brand font-bold text-4xl lowercase shadow-lg">kilna</span></div>
+                </div>
+            `));
+
+            book.appendChild(createPage('02. KİMLİK', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Amblem.</h3>
+                <div class="flex justify-center items-center h-96">
+                    <div class="w-64 h-64 text-black">
+                        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M50 50 m 0 0 l 0 0" stroke-width="4" /><path d="M50 50 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0" /><path d="M50 50 m -26 0 a 26 26 0 1 0 52 0 a 26 26 0 1 0 -52 0" /><path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" /></svg>
+                    </div>
+                </div>
+                <p class="text-center font-serif italic text-xl">"Sonsuz Dönüş"</p>
+            `));
+
+            // --- KİMLİK: RENK ---
+            book.appendChild(createPage('02. KİMLİK', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Renk: Ana.</h3>
+                <div class="h-64 bg-[#2C2420] w-full mb-4"></div>
+                <div class="font-mono text-sm"><strong>YANIK KÖMÜR</strong><br>HEX: #2C2420 | CMYK: 68/66/64/73</div>
+            `));
+
+            book.appendChild(createPage('02. KİMLİK', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Renk: Vurgu.</h3>
+                <div class="h-64 bg-[#C18C74] w-full mb-4"></div>
+                <div class="font-mono text-sm"><strong>TERRACOTTA</strong><br>HEX: #C18C74 | CMYK: 22/47/53/3</div>
+            `));
+
+            book.appendChild(createPage('02. KİMLİK', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Renk: Zemin.</h3>
+                <div class="h-64 bg-[#F5F2EB] w-full border border-gray-200 mb-4"></div>
+                <div class="font-mono text-sm"><strong>KAĞIT BEYAZI</strong><br>HEX: #F5F2EB | CMYK: 2/2/4/0</div>
+            `));
+
+            // --- KİMLİK: TİPOGRAFİ (FONT AİLELERİ) ---
+            book.appendChild(createPage('02. KİMLİK', `
+                <div class="flex justify-between items-end border-b border-black pb-4 mb-12">
+                    <h3 class="font-sans font-bold text-4xl">Tipografi: Logo</h3>
+                    <span class="font-mono text-xs text-brand-clay">BİRİNCİL FONT</span>
+                </div>
+                <h1 class="font-brand font-bold text-[80px] leading-none mb-8 lowercase">Comfortaa</h1>
+                <div class="grid grid-cols-2 gap-8 mb-12">
+                    <div>
+                        <span class="font-mono text-xs block mb-2 opacity-50">KARAKTER SETİ</span>
+                        <p class="font-brand font-bold text-2xl opacity-80 lowercase leading-relaxed">
+                            a b c ç d e f g ğ h ı i j k l m n o ö p r s ş t u ü v y z
+                            <br>1 2 3 4 5 6 7 8 9 0
+                        </p>
+                    </div>
+                    <div>
+                        <span class="font-mono text-xs block mb-2 opacity-50">KULLANIM</span>
+                        <p class="font-sans text-sm">
+                            Markanın imzasıdır. Sadece logotype, ambalaj üzerindeki ana başlıklar ve çok kısa, vurucu sloganlarda kullanılır. Daima <strong>miniskül (küçük harf)</strong> ve <strong>kalın (bold)</strong> ağırlıkta kullanılır.
+                        </p>
+                    </div>
+                </div>
+                <div class="font-brand font-bold text-6xl opacity-10">kilna ceramic studio</div>
+            `));
+
+            book.appendChild(createPage('02. KİMLİK', `
+                <div class="flex justify-between items-end border-b border-black pb-4 mb-12">
+                    <h3 class="font-sans font-bold text-4xl">Tipografi: Editoryal</h3>
+                    <span class="font-mono text-xs text-brand-clay">BAŞLIK FONTU</span>
+                </div>
+                <h1 class="font-serif italic text-[80px] leading-none mb-8">Cormorant</h1>
+                <div class="grid grid-cols-2 gap-8 mb-12">
+                    <div>
+                        <span class="font-mono text-xs block mb-2 opacity-50">STİL</span>
+                        <p class="font-serif italic text-4xl leading-tight">
+                            Toprağın En Saf Hali.<br>
+                            Kusurlu Güzellik.
+                        </p>
+                    </div>
+                    <div>
+                        <span class="font-mono text-xs block mb-2 opacity-50">KULLANIM</span>
+                        <p class="font-sans text-sm">
+                            Markanın "Bilge" ve "Sanatsal" yönünü temsil eder. H1, H2 başlıklarında, alıntılarda ve duygusal mesajlarda kullanılır. Genellikle <strong>Italic</strong> versiyonu tercih edilir.
+                        </p>
+                    </div>
+                </div>
+            `));
+
+            book.appendChild(createPage('02. KİMLİK', `
+                <div class="flex justify-between items-end border-b border-black pb-4 mb-12">
+                    <h3 class="font-sans font-bold text-4xl">Tipografi: Gövde</h3>
+                    <span class="font-mono text-xs text-brand-clay">OKUMA FONTU</span>
+                </div>
+                <h1 class="font-sans font-extrabold text-[80px] leading-none mb-8">Manrope</h1>
+                <div class="grid grid-cols-2 gap-8 mb-12">
+                    <div>
+                        <span class="font-mono text-xs block mb-2 opacity-50">AĞIRLIKLAR</span>
+                        <p class="font-sans font-light text-2xl">Light 300</p>
+                        <p class="font-sans font-normal text-2xl">Regular 400</p>
+                        <p class="font-sans font-semibold text-2xl">SemiBold 600</p>
+                        <p class="font-sans font-bold text-2xl">Bold 700</p>
+                    </div>
+                    <div>
+                        <span class="font-mono text-xs block mb-2 opacity-50">KULLANIM</span>
+                        <p class="font-sans text-sm">
+                            Modern, geometrik ve son derece okunaklı bir sans-serif fonttur. Web sitesi arayüzü, ürün açıklamaları, uzun metinler ve fiyat etiketlerinde kullanılır.
+                        </p>
+                    </div>
+                </div>
+                <p class="font-sans text-base leading-relaxed max-w-2xl border-l-2 border-brand-clay pl-4">
+                    "Kilna, modern yaşamın hızı içinde bir duraklama noktasıdır. Ürünlerimiz, fabrikasyon değil, %100 el yapımıdır. Her bir parça, sanatçının atölyesinde özenle şekillendirildi."
+                </p>
+            `));
+
+            book.appendChild(createPage('02. KİMLİK', `
+                <div class="flex justify-between items-end border-b border-black pb-4 mb-12">
+                    <h3 class="font-sans font-bold text-4xl">Tipografi: Teknik</h3>
+                    <span class="font-mono text-xs text-brand-clay">DETAY FONTU</span>
+                </div>
+                <h1 class="font-mono text-[80px] leading-none mb-8">Space Mono</h1>
+                <div class="grid grid-cols-2 gap-8 mb-12">
+                    <div>
+                        <span class="font-mono text-xs block mb-2 opacity-50">KARAKTER</span>
+                        <p class="font-mono text-xl">
+                            SKU: VN-004<br>
+                            TARİH: 2026<br>
+                            EL YAPIMI
+                        </p>
+                    </div>
+                    <div>
+                        <span class="font-mono text-xs block mb-2 opacity-50">KULLANIM</span>
+                        <p class="font-sans text-sm">
+                            Markanın "Şeffaflık" değerini vurgular. Ürün kodları, teknik özellikler, dipnotlar ve etiket üzerindeki bilgiler için kullanılır.
+                        </p>
+                    </div>
+                </div>
+            `));
+
+            book.appendChild(createPage('02. KİMLİK', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Hiyerarşi.</h3>
+                <div class="space-y-8">
+                    <div><span class="font-mono text-xs text-brand-clay">H1 (Cormorant)</span><h1 class="font-serif italic text-6xl">Yeni Koleksiyon</h1></div>
+                    <div><span class="font-mono text-xs text-brand-clay">H2 (Comfortaa)</span><h2 class="font-brand font-bold text-3xl lowercase">doku serisi</h2></div>
+                    <div><span class="font-mono text-xs text-brand-clay">BODY (Manrope)</span><p class="font-sans text-sm max-w-md text-gray-600">Her parça el yapımıdır ve kendine has dokular içerir.</p></div>
+                    <div><span class="font-mono text-xs text-brand-clay">CAPTION (Space Mono)</span><p class="font-mono text-xs uppercase text-gray-400">Ref: 2026-X</p></div>
+                </div>
+            `));
+
+            // --- FOTOĞRAFÇILIK ---
+            book.appendChild(createPage('02. KİMLİK', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Görsel Dil.</h3>
+                <div class="w-full h-96 bg-gray-200 flex items-center justify-center mb-8">[Doğal Işık / Makro Doku]</div>
+                <p class="font-serif text-2xl italic">"Sert gölgeler yok. Sadece gün ışığı."</p>
+            `));
+
+            book.appendChild(createPage('02. KİMLİK', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Kompozisyon.</h3>
+                <div class="grid grid-cols-2 gap-4"><div class="aspect-[4/5] bg-gray-200"></div><div class="aspect-[4/5] bg-gray-200"></div></div>
+                <p class="mt-4 font-mono text-xs">Merkezi odak veya 1/3 kuralı.</p>
+            `));
+
+            book.appendChild(createPage('02. KİMLİK', `
+                <h3 class="font-sans font-bold text-4xl mb-12">İkon Seti.</h3>
+                <div class="grid grid-cols-4 gap-8">
+                    <div class="aspect-square border border-gray-200 flex items-center justify-center">●</div>
+                    <div class="aspect-square border border-gray-200 flex items-center justify-center">■</div>
+                    <div class="aspect-square border border-gray-200 flex items-center justify-center">▲</div>
+                    <div class="aspect-square border border-gray-200 flex items-center justify-center">◆</div>
+                </div>
+            `));
+
+            // --- UYGULAMA: EVRAK ---
+            book.appendChild(createPage('03. UYGULAMA', `
+                <div class="h-full flex items-center justify-center bg-gray-50 -m-[20mm]"><h2 class="font-serif italic text-6xl">Kurumsal Evrak</h2></div>
+            `));
+
+            book.appendChild(createPage('03. UYGULAMA', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Kartvizit.</h3>
+                <div class="flex flex-col items-center gap-12">
+                    <div class="w-[90mm] h-[55mm] border border-black p-6 flex flex-col justify-between"><span class="font-brand font-bold text-xl lowercase">kilna</span><span class="font-mono text-[8px]">ONLINE MARKETPLACE</span></div>
+                    <div class="w-[90mm] h-[55mm] bg-[#2C2420] text-white p-6 flex flex-col justify-center text-center"><span class="font-serif italic">Defne Yılmaz</span><span class="font-mono text-[8px] mt-2">FOUNDER</span></div>
+                </div>
+            `));
+
+            book.appendChild(createPage('03. UYGULAMA', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Antetli Kağıt.</h3>
+                <div class="w-full h-[200mm] border border-gray-200 p-8 relative"><div class="absolute top-8 left-8 font-brand font-bold lowercase">kilna</div><div class="absolute bottom-8 left-8 font-mono text-[8px]">ISTANBUL, TR</div></div>
+            `));
+
+            book.appendChild(createPage('03. UYGULAMA', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Zarf.</h3>
+                <div class="w-full h-[110mm] border border-gray-200 p-8 flex items-end justify-end"><div class="w-8 h-8 bg-black/10 rounded-full"></div></div>
+            `));
+
+            book.appendChild(createPage('03. UYGULAMA', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Dosya.</h3>
+                <div class="w-[220mm] h-[150mm] bg-[#2C2420] text-white p-8"><h1 class="font-sans font-extralight text-8xl opacity-10">k</h1></div>
+            `));
+
+            // --- UYGULAMA: AMBALAJ ---
+            book.appendChild(createPage('03. UYGULAMA', `
+                <div class="h-full flex items-center justify-center bg-[#C18C74] text-white -m-[20mm]"><h2 class="font-serif italic text-6xl">Ambalaj</h2></div>
+            `));
+
+            book.appendChild(createPage('03. UYGULAMA', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Kargo Kutusu.</h3>
+                <div class="w-64 h-64 mx-auto bg-[#D6C0A0] border border-black/10 flex items-center justify-center relative"><div class="bg-white px-4 py-2 font-brand font-bold lowercase transform -rotate-2">kilna</div></div>
+                <p class="text-center mt-8 font-mono text-xs">Kraft E-Dalga Mukavva</p>
+            `));
+
+            book.appendChild(createPage('03. UYGULAMA', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Koli Bandı.</h3>
+                <div class="h-16 bg-white border-y border-black flex items-center gap-12 overflow-hidden font-bold font-brand lowercase">kilna kilna kilna kilna kilna</div>
+            `));
+
+            book.appendChild(createPage('03. UYGULAMA', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Etiket.</h3>
+                <div class="w-32 h-48 mx-auto border border-black p-4 flex flex-col justify-between text-center"><div class="w-4 h-4 bg-black rounded-full mx-auto"></div><div><span class="block font-serif italic text-lg">El Yapımı</span><span class="font-mono text-[8px]">HANDMADE IN ISTANBUL</span></div></div>
+            `));
+
+            book.appendChild(createPage('03. UYGULAMA', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Pelur Deseni.</h3>
+                <div class="h-64 w-full bg-gray-50 overflow-hidden relative"><div class="absolute inset-0 p-4 opacity-10 font-brand font-bold text-4xl leading-tight lowercase">kilna kilna kilna kilna kilna</div></div>
+            `));
+
+            book.appendChild(createPage('03. UYGULAMA', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Teşekkür Kartı.</h3>
+                <div class="w-[105mm] h-[148mm] border border-gray-200 mx-auto p-8 text-center flex flex-col justify-center"><p class="font-serif italic text-2xl">"Toprağa dokun."</p></div>
+            `));
+
+            // --- UYGULAMA: ÜRÜNLER ---
+            book.appendChild(createPage('03. UYGULAMA', `
+                <div class="h-full flex items-center justify-center bg-gray-100 -m-[20mm]"><h2 class="font-serif italic text-6xl">Ürünler</h2></div>
+            `));
+
+            book.appendChild(createPage('03. UYGULAMA', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Bez Çanta.</h3>
+                <div class="w-64 h-80 bg-[#F0EEE9] mx-auto border border-black/10 flex items-center justify-center"><h1 class="font-brand font-bold text-4xl opacity-80 lowercase">kilna</h1></div>
+            `));
+
+            book.appendChild(createPage('03. UYGULAMA', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Önlük.</h3>
+                <div class="w-48 h-64 bg-[#2C2420] mx-auto rounded-t-xl relative pt-8 text-center text-white"><span class="font-mono text-[10px]">STAFF</span></div>
+            `));
+
+            book.appendChild(createPage('03. UYGULAMA', `
+                <h3 class="font-sans font-bold text-4xl mb-12">T-Shirt.</h3>
+                <div class="w-64 h-64 bg-white border border-gray-200 mx-auto rounded-3xl pt-8 text-center"><span class="font-brand font-bold text-xl lowercase">k</span></div>
+            `));
+
+            book.appendChild(createPage('03. UYGULAMA', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Tabela.</h3>
+                <div class="h-48 bg-gray-800 text-white flex items-center justify-center font-brand font-bold text-4xl tracking-widest lowercase">kilna</div>
+            `));
+
+            book.appendChild(createPage('03. UYGULAMA', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Araç Giydirme.</h3>
+                <div class="h-32 w-full bg-white border border-gray-200 relative"><div class="absolute top-1/2 left-8 -translate-y-1/2 font-brand font-bold lowercase">kilna</div></div>
+            `));
+
+            // --- DİJİTAL ---
+            book.appendChild(createPage('04. DİJİTAL', `
+                <div class="h-full flex items-center justify-center bg-black text-white -m-[20mm]"><h2 class="font-serif italic text-6xl">Dijital</h2></div>
+            `));
+
+            book.appendChild(createPage('04. DİJİTAL', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Web Anasayfa.</h3>
+                <div class="border border-gray-200 rounded-t-lg h-96 w-full bg-white relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gray-50 flex items-center justify-center"><span class="font-serif italic text-2xl">Hero Görsel</span></div>
+                    <div class="absolute top-0 w-full p-4 flex justify-between"><span class="font-brand font-bold lowercase">kilna</span><div class="flex gap-4 text-xs"><span>Shop</span><span>About</span></div></div>
+                </div>
+            `));
+
+            book.appendChild(createPage('04. DİJİTAL', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Web Ürün Detay.</h3>
+                <div class="grid grid-cols-2 gap-8"><div class="h-64 bg-gray-100"></div><div class="flex flex-col justify-center"><h4 class="font-serif text-2xl">Vazo No.1</h4><p class="font-mono text-xs mt-2">₺1.200</p><button class="bg-black text-white py-2 mt-4 text-xs">Sepete Ekle</button></div></div>
+            `));
+
+            book.appendChild(createPage('04. DİJİTAL', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Mobil UI.</h3>
+                <div class="w-64 h-96 border-4 border-black mx-auto rounded-2xl relative bg-white"><div class="p-4 border-b"><span class="font-brand font-bold lowercase">kilna</span></div></div>
+            `));
+
+            book.appendChild(createPage('04. DİJİTAL', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Instagram.</h3>
+                <div class="grid grid-cols-3 gap-1"><div class="aspect-square bg-gray-200"></div><div class="aspect-square bg-gray-200 flex items-center justify-center text-center p-2 font-serif italic text-xs">Quote</div><div class="aspect-square bg-gray-200"></div></div>
+            `));
+
+            book.appendChild(createPage('04. DİJİTAL', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Story Şablonu.</h3>
+                <div class="w-64 h-[110mm] border border-gray-200 mx-auto relative bg-gray-50"><div class="absolute bottom-8 w-full text-center text-xs font-mono">LINK IN BIO</div></div>
+            `));
+
+            book.appendChild(createPage('04. DİJİTAL', `
+                <h3 class="font-sans font-bold text-4xl mb-12">E-Mail Bülten.</h3>
+                <div class="w-full border border-gray-200 p-8 text-center"><span class="font-brand font-bold text-xl lowercase">kilna</span><h2 class="font-serif italic text-2xl my-8">Yeni Koleksiyon</h2><button class="bg-black text-white px-6 py-2 text-xs">İncele</button></div>
+            `));
+
+            book.appendChild(createPage('04. DİJİTAL', `
+                <h3 class="font-sans font-bold text-4xl mb-12">Banner.</h3>
+                <div class="w-full h-32 bg-gray-100 flex items-center justify-center"><span class="font-serif italic text-2xl">Kargo Bedava</span></div>
+            `));
+
+            book.appendChild(createPage('04. DİJİTAL', `
+                <div class="h-full flex flex-col justify-center items-center text-center -m-[20mm]">
+                    <h2 class="font-brand font-bold text-4xl mb-4 lowercase">kilna</h2>
+                    <div class="w-12 h-px bg-black mb-4"></div>
+                    <p class="font-mono text-xs text-gray-500">Istanbul, TR<br>hello@kilna.com<br>© 2026 KILNA MARKETPLACE</p>
+                </div>
+            `));
+        </script>
+
+    </div>
 
 </body>
 </html>
