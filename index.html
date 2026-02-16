@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kilna | Brand Bible (Graphic Edition)</title>
+    <title>kilna | Strategic Visual Brand Bible</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Space+Mono&family=Manrope:wght@200;300;400;500;600;700;800&family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
@@ -21,332 +21,401 @@
                             black: '#121212',
                             gray: '#888888',
                             light: '#F4F4F4',
-                            clay: '#C18C74',
+                            clay: '#C69C86',
+                            sand: '#DBC0B0',
                             paper: '#FFFFFF',
-                            green: '#4A5D4F'
+                            green: '#4A5D4F',
+                            charcoal: '#2C2420',
+                            kraft: '#E3D7C5',
+                            beige: '#EBDAD0'
                         }
-                    },
-                    spacing: {
-                        'a4w': '210mm',
-                        'a4h': '297mm',
                     }
                 }
             }
         }
     </script>
     <style>
-        /* PRINT OPTIMIZATION */
         :root { --page-width: 210mm; --page-height: 297mm; }
-        
-        body { 
-            background-color: #555; 
-            color: #121212;
-            -webkit-print-color-adjust: exact !important; 
-            print-color-adjust: exact !important; 
+        body { background-color: #1a1a1a; color: #121212; margin: 0; padding: 40px 0; display: flex; flex-direction: column; align-items: center; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        #book-container { width: var(--page-width); background: white; }
+        .page { width: var(--page-width); height: var(--page-height); background: white; position: relative; overflow: hidden; margin-bottom: 20px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); page-break-after: always; }
+
+        .grid-layout { 
+            display: grid; 
+            grid-template-columns: repeat(12, 1fr); 
+            grid-column-gap: 4mm; 
+            padding: 25mm 45mm 20mm 45mm; 
+            height: 100%; 
+            position: relative; 
+            z-index: 10; 
         }
         
-        #book-container {
-            width: var(--page-width);
-            margin: 40px auto;
-            background: white;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-
-        .page {
-            width: var(--page-width);
-            height: var(--page-height);
-            background: white;
-            position: relative;
-            overflow: hidden;
-            page-break-after: always;
-            break-after: page;
-            border-bottom: 1px solid #eee;
-        }
-
-        .grid-layout {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            grid-column-gap: 4mm;
-            padding: 20mm;
-            height: 100%;
-            position: relative;
-            z-index: 10;
-        }
-
-        h1, h2, h3, h4 { font-weight: normal; }
+        .page-num { position: absolute; bottom: 15mm; right: 45mm; font-family: 'Space Mono', monospace; font-size: 8pt; opacity: 0.4; }
         
-        .page-num {
-            position: absolute;
-            bottom: 15mm;
-            right: 20mm;
-            font-family: 'Space Mono', monospace;
-            font-size: 8pt;
-            color: #121212;
+        .chapter-mark { 
+            position: absolute; 
+            top: 25mm; 
+            left: 15mm; 
+            font-family: 'Space Mono', monospace; 
+            font-size: 7pt; 
+            text-transform: uppercase; 
+            letter-spacing: 3px; 
+            transform-origin: top left; 
+            transform: rotate(-90deg) translateX(-100%); 
+            opacity: 0.3; 
+            white-space: nowrap; 
         }
 
-        .chapter-mark {
-            position: absolute;
-            top: 20mm;
-            left: 20mm;
-            font-family: 'Space Mono', monospace;
-            font-size: 7pt;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transform-origin: top left;
-            transform: rotate(-90deg) translateX(-100%);
+        #sidebar { position: fixed; left: 2rem; top: 50%; transform: translateY(-50%); z-index: 100; }
+        .nav-link:hover .dot { transform: scale(1.5); background-color: #C18C74; }
+
+        @media print { 
+            body { background: white; margin: 0; padding: 0; } 
+            #book-container { margin: 0; width: 100%; box-shadow: none; } 
+            .page { margin: 0; box-shadow: none; border: none; } 
+            #sidebar, .no-print { display: none !important; } 
+            @page { size: A4; margin: 0; } 
         }
-
-        /* SVG Icons Styling */
-        .icon-flat { fill: currentColor; }
-
-        @media screen { .page { margin-bottom: 20px; } }
-
-        @media print {
-            body { background: none; margin: 0; padding: 0; }
-            #book-container { margin: 0; box-shadow: none; width: 100%; }
-            .no-print { display: none !important; }
-            .page { border-bottom: none; margin: 0; width: 100%; height: 100%; }
-            @page { size: A4; margin: 0; }
-        }
+        
+        .visual-area { background: #FDFDFD; border: 1px solid #f3f4f6; position: relative; overflow: hidden; }
+        .concept-label { font-family: 'Space Mono', monospace; font-size: 7pt; text-transform: uppercase; letter-spacing: 2px; color: #C69C86; margin-bottom: 8px; display: block; }
+        .hero-title { font-family: 'Cormorant Garamond', serif; font-size: 38pt; font-style: italic; line-height: 1.1; margin-bottom: 2rem; }
+        .mockup-shadow { box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
     </style>
 </head>
-<body>
+<body class="font-sans antialiased text-[10.5pt]">
 
-    <!-- Controls -->
-    <div class="fixed top-6 right-6 z-50 no-print flex flex-col gap-3 items-end">
-        <div class="bg-brand-black text-white px-6 py-6 rounded-xl shadow-2xl flex flex-col items-end gap-3 border border-gray-700 max-w-sm">
-            <h3 class="font-bold text-lg text-brand-clay">Graphic Edition (57 Sayfa)</h3>
-            <ol class="text-xs text-gray-300 space-y-2 list-decimal list-inside text-right font-mono">
-                <li>Aşağıdaki butona basın.</li>
-                <li>Hedef Yazıcıyı <strong>"PDF Olarak Kaydet"</strong> seçin.</li>
-                <li>Ayarlar > <strong>"Arka Plan Grafikleri"</strong>ni işaretleyin.</li>
-            </ol>
-            <button onclick="window.print()" class="w-full mt-2 font-sans font-bold text-sm bg-brand-clay hover:bg-white hover:text-brand-black transition-colors px-6 py-3 rounded-lg flex items-center justify-center gap-2">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 15l0 -9M12 15l-4 -4M12 15l4 -4M4 19h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                PDF OLARAK KAYDET
-            </button>
-        </div>
-    </div>
+    <nav id="sidebar" class="no-print">
+        <ul class="space-y-4">
+            <li class="group"><a href="#p1" class="nav-link flex items-center gap-3"><span class="dot w-2 h-2 rounded-full bg-white/20 transition-all"></span><span class="text-[9px] text-white/40 group-hover:text-white uppercase tracking-widest transition-opacity opacity-0 group-hover:opacity-100 font-mono">Kapak</span></a></li>
+            <li class="group"><a href="#toc" class="nav-link flex items-center gap-3"><span class="dot w-2 h-2 rounded-full bg-white/20 transition-all"></span><span class="text-[9px] text-white/40 group-hover:text-white uppercase tracking-widest transition-opacity opacity-0 group-hover:opacity-100 font-mono">Dizin</span></a></li>
+            <li class="group"><a href="#page-03" class="nav-link flex items-center gap-3"><span class="dot w-2 h-2 rounded-full bg-white/20 transition-all"></span><span class="text-[9px] text-white/40 group-hover:text-white uppercase tracking-widest transition-opacity opacity-0 group-hover:opacity-100 font-mono">Manifesto</span></a></li>
+            <li class="group"><a href="#page-08" class="nav-link flex items-center gap-3"><span class="dot w-2 h-2 rounded-full bg-white/20 transition-all"></span><span class="text-[9px] text-white/40 group-hover:text-white uppercase tracking-widest transition-opacity opacity-0 group-hover:opacity-100 font-mono">Sistem</span></a></li>
+        </ul>
+    </nav>
 
-    <!-- THE BOOK CONTAINER -->
     <div id="book-container">
 
-        <!-- P01: COVER -->
-        <div class="page">
-            <div class="grid-layout">
-                <div class="col-span-12 flex flex-col justify-between h-full">
-                    <div class="mt-[80mm]">
-                        <h1 class="font-brand font-bold text-[100px] leading-[0.8] -ml-2 tracking-tight lowercase">kilna</h1>
-                        <p class="font-serif italic text-2xl mt-4 text-gray-500">Curated Ceramic Marketplace</p>
+        <!-- P01: KAPAK -->
+        <div id="p1" class="page">
+            <div class="grid-layout text-brand-black content-center">
+                <div class="col-span-12 flex flex-col items-center justify-center h-full text-center">
+                    <div class="w-40 h-40 mb-12 text-brand-clay">
+                        <svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="50" cy="50" r="29" fill="none" stroke="currentColor" stroke-width="3" opacity="0.6"/><circle cx="50" cy="50" r="18" fill="none" stroke="currentColor" stroke-width="3" opacity="0.4"/><circle cx="50" cy="50" r="4" fill="currentColor"/></svg>
                     </div>
-                    <div class="border-t border-black pt-6 flex justify-between items-end font-mono text-xs">
-                        <div>
-                            <span class="block text-gray-400 mb-1">DOKÜMAN</span>
-                            Brand Bible<br>Graphic Edition
-                        </div>
-                        <div class="text-right">
-                            <span class="block text-gray-400 mb-1">TARİH</span>
-                            2026
-                        </div>
-                    </div>
+                    <h1 class="font-brand font-bold text-[140px] leading-none tracking-tighter lowercase mb-4">kilna</h1>
+                    <p class="font-serif italic text-3xl text-brand-clay tracking-wide">Strategic Visual Archive</p>
+                    <div class="mt-20 font-mono text-[8pt] uppercase tracking-[0.4em] opacity-40">Standards Manual 2026</div>
                 </div>
             </div>
         </div>
 
-        <!-- P02: INDEX -->
-        <div class="page">
-            <div class="grid-layout content-center">
-                <div class="col-span-12 mb-12 border-b border-black pb-4">
-                    <h2 class="font-serif text-4xl italic">İçindekiler</h2>
+        <!-- P02: İÇİNDEKİLER -->
+        <div id="toc" class="page">
+            <div class="grid-layout content-center text-brand-black">
+                <div class="col-span-12 mb-16">
+                    <h2 class="font-brand font-bold text-6xl tracking-tighter lowercase">görsel hiyerarşi</h2>
                 </div>
-                <div class="col-span-6 space-y-2 font-mono text-xs">
-                    <div class="flex justify-between border-b border-gray-100 py-2"><span>01. Manifesto</span><span>03</span></div>
-                    <div class="flex justify-between border-b border-gray-100 py-2"><span>02. Strateji</span><span>04</span></div>
-                    <div class="flex justify-between border-b border-gray-100 py-2"><span>03. Logo Sistemi</span><span>08</span></div>
-                    <div class="flex justify-between border-b border-gray-100 py-2"><span>04. Renk Paleti</span><span>15</span></div>
-                    <div class="flex justify-between border-b border-gray-100 py-2"><span>05. Tipografi</span><span>18</span></div>
-                    <div class="flex justify-between border-b border-gray-100 py-2"><span class="font-bold text-brand-clay">06. İkonografi & Görsel Dil (YENİ)</span><span>22</span></div>
-                </div>
-                <div class="col-span-6 space-y-2 font-mono text-xs pl-8">
-                    <div class="flex justify-between border-b border-gray-100 py-2"><span>07. Kurumsal Evrak</span><span>25</span></div>
-                    <div class="flex justify-between border-b border-gray-100 py-2"><span class="font-bold text-brand-clay">08. Ambalaj & Bakım (YENİ)</span><span>30</span></div>
-                    <div class="flex justify-between border-b border-gray-100 py-2"><span>09. Personel & Araç</span><span>36</span></div>
-                    <div class="flex justify-between border-b border-gray-100 py-2"><span>10. Dijital Varlıklar</span><span>44</span></div>
-                    <div class="flex justify-between border-b border-gray-100 py-2"><span>11. Ekosistem & Topluluk</span><span>51</span></div>
+                <div class="col-span-12 grid grid-cols-1 gap-6 font-mono text-[9px] uppercase tracking-widest leading-none opacity-60">
+                    <div class="flex justify-between items-baseline border-b border-gray-100 pb-2"><span>01. Manifesto</span><span>03</span></div>
+                    <div class="flex justify-between items-baseline border-b border-gray-100 pb-2"><span>02. Strateji</span><span>04</span></div>
+                    <div class="flex justify-between items-baseline border-b border-gray-100 pb-2 text-brand-clay font-bold"><span>03. Logo Sistemi</span><span>08</span></div>
+                    <div class="flex justify-between items-baseline border-b border-gray-100 pb-2 pl-6"><span>- Amblem & Grid</span><span>09</span></div>
+                    <div class="flex justify-between items-baseline border-b border-gray-100 pb-2 pl-6"><span>- Do & Don't</span><span>10</span></div>
+                    <div class="flex justify-between items-baseline border-b border-gray-100 pb-2"><span>04. Renk & Doku</span><span>14</span></div>
+                    <div class="flex justify-between items-baseline border-b border-gray-100 pb-2"><span>05. Tipografi</span><span>18</span></div>
+                    <div class="flex justify-between items-baseline border-b border-gray-100 pb-2"><span>06. Görsel Dil</span><span>22</span></div>
+                    <div class="flex justify-between items-baseline border-b border-gray-100 pb-2"><span>07. Uygulama</span><span>26</span></div>
+                    <div class="flex justify-between items-baseline border-b-0 pb-2"><span>13. Analiz</span><span>62</span></div>
                 </div>
             </div>
             <div class="page-num">02</div>
         </div>
 
-        <!-- JS GENERATOR LOOP -->
-        <script>
-            const book = document.getElementById('book-container');
-            let currentPageNum = 3;
+        <div id="dynamic-pages"></div>
 
-            const createPage = (title, content, bgClass = '') => {
-                const div = document.createElement('div');
-                div.className = `page ${bgClass}`;
-                div.innerHTML = `
-                    <div class="chapter-mark ${bgClass.includes('bg-[#') ? 'text-white/50' : ''}">${title}</div>
-                    <div class="grid-layout">
-                        <div class="col-span-12 pt-[40mm]">
-                            ${content}
-                        </div>
+        <!-- ARKA KAPAK -->
+        <div id="back-cover" class="page bg-brand-charcoal text-white border-none">
+            <div class="grid-layout items-center justify-center text-center">
+                <div class="col-span-12">
+                    <div class="w-20 h-20 mx-auto mb-8 opacity-50 text-brand-clay">
+                        <svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="50" cy="50" r="29" fill="none" stroke="currentColor" stroke-width="3" opacity="0.6"/><circle cx="50" cy="50" r="18" fill="none" stroke="currentColor" stroke-width="3" opacity="0.4"/><circle cx="50" cy="50" r="4" fill="currentColor"/></svg>
                     </div>
-                    <div class="page-num ${bgClass.includes('bg-[#') ? 'text-white/50' : ''}">${currentPageNum.toString().padStart(2, '0')}</div>
-                `;
-                currentPageNum++;
-                return div;
-            };
+                    <p class="font-mono text-[9px] tracking-[0.4em] uppercase opacity-40 italic">Nature &bull; Patience &bull; Handcraft</p>
+                    <p class="font-mono text-[8pt] uppercase opacity-20 mt-32">muimedya.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            // ========== STRATEJİ & LOGO (Existing) ==========
-            book.appendChild(createPage('01. MANIFESTO', `<div class="h-full flex items-center justify-center text-center"><div class="max-w-2xl"><p class="font-mono text-xs text-brand-clay mb-8 tracking-widest">MİSYONUMUZ</p><h2 class="font-serif text-4xl leading-relaxed">"Kusurlulukta mükemmelliği arıyoruz. <br>Makinelerin soğukluğuna karşı,<br>insan elinin sıcaklığını koyuyoruz."</h2></div></div>`, 'bg-[#121212] text-white'));
-            book.appendChild(createPage('02. STRATEJİ', `<h3 class="font-sans font-bold text-6xl mb-8">Hikaye.</h3><div class="grid grid-cols-2 gap-8 text-sm leading-relaxed text-gray-600 font-serif"><p>Kilna, adını seramik fırınından alır. Ancak biz tek bir atölye değil, koca bir ekosistemiz.</p><p>Biz bir üretici değil, seçiciyiz (curator). Geleneksel zanaat ile modern tasarımı birleştiren, yavaş yaşamı destekleyen objeleri sizin için keşfediyoruz.</p></div>`));
-            book.appendChild(createPage('02. STRATEJİ', `<h3 class="font-sans font-bold text-6xl mb-8">Değerler.</h3><div class="space-y-8 mt-12"><div class="border-t border-black pt-4"><span class="font-mono text-xs">01</span><h4 class="font-serif text-2xl italic">Kürasyon (Seçki)</h4></div><div class="border-t border-black pt-4"><span class="font-mono text-xs">02</span><h4 class="font-serif text-2xl italic">Zanaatkar Desteği</h4></div><div class="border-t border-black pt-4"><span class="font-mono text-xs">03</span><h4 class="font-serif text-2xl italic">Şeffaf E-Ticaret</h4></div></div>`));
-            book.appendChild(createPage('02. STRATEJİ', `<h3 class="font-sans font-bold text-6xl mb-8">Arketip.</h3><div class="bg-gray-100 p-12 text-center mt-12"><span class="font-mono text-xs">KEŞİFÇİ & HAMİ</span><p class="font-serif italic text-3xl mt-4">"En iyiyi arayan, ustayı koruyan."</p></div>`));
-            book.appendChild(createPage('02. STRATEJİ', `<h3 class="font-sans font-bold text-6xl mb-8">Hedef Kitle.</h3><div class="grid grid-cols-2 gap-8 mt-12"><div class="p-8 border border-gray-200"><h4 class="font-bold mb-2">Persona A: Zeynep</h4><p class="text-xs text-gray-500">Mimar, 34, İstanbul</p><p class="mt-4 text-sm">Online alışverişte "hikaye" arıyor.</p></div><div class="p-8 border border-gray-200"><h4 class="font-bold mb-2">Persona B: Can</h4><p class="text-xs text-gray-500">Yazılımcı, 29, İzmir</p><p class="mt-4 text-sm">Pratik ve kaliteli.</p></div></div>`));
-            book.appendChild(createPage('03. LOGO', `<div class="h-full flex flex-col justify-center items-center"><div class="w-64 h-64 text-brand-clay mb-8"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"><path d="M50 50 m 0 0 l 0 0" stroke-width="6" /><path d="M50 50 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0" opacity="0.4" /><path d="M50 50 m -26 0 a 26 26 0 1 0 52 0 a 26 26 0 1 0 -52 0" opacity="0.7" /><path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" /></svg></div><h1 class="font-brand font-bold text-8xl lowercase">kilna</h1></div>`));
-            book.appendChild(createPage('03. LOGO', `<h3 class="font-sans font-bold text-4xl mb-12">Logotype.</h3><div class="space-y-12"><div><span class="block font-mono text-xs mb-2 text-gray-400">PRIMARY</span><h2 class="font-brand font-bold text-8xl lowercase">kilna</h2></div><div><span class="block font-mono text-xs mb-2 text-gray-400">STACKED</span><h2 class="font-brand font-bold text-6xl leading-none lowercase">kil<br>na</h2></div></div>`));
-            book.appendChild(createPage('03. LOGO', `<h3 class="font-sans font-bold text-4xl mb-12">Konstrüksiyon.</h3><div class="border border-gray-200 aspect-square relative flex items-center justify-center"><div class="absolute inset-0 grid grid-cols-10 grid-rows-10 opacity-10"><div class="border border-black"></div></div><div class="w-64 h-64 border border-blue-500 rounded-full opacity-50 flex items-center justify-center"><div class="w-48 h-48 border border-blue-500 rounded-full"></div></div></div>`));
-            book.appendChild(createPage('03. LOGO', `<h3 class="font-sans font-bold text-4xl mb-12">Güvenli Alan.</h3><div class="bg-gray-50 p-20 flex justify-center relative"><div class="absolute top-8 left-1/2 -translate-x-1/2 font-mono text-blue-500">X</div><div class="border border-dashed border-blue-300 p-12"><span class="font-brand font-bold text-6xl lowercase">kilna</span></div></div>`));
-            book.appendChild(createPage('03. LOGO', `<h3 class="font-sans font-bold text-4xl mb-12">Minimum Boyut.</h3><div class="grid grid-cols-2 gap-12"><div><h4 class="font-bold mb-4">Baskı</h4><div class="h-px bg-black w-8 mb-2"></div><span class="text-xs">25mm</span></div><div><h4 class="font-bold mb-4">Dijital</h4><div class="h-px bg-black w-24 mb-2"></div><span class="text-xs">90px</span></div></div>`));
-            book.appendChild(createPage('03. LOGO', `<h3 class="font-sans font-bold text-4xl mb-12 text-red-500">Yanlışlar.</h3><div class="grid grid-cols-2 gap-4 text-center"><div class="bg-gray-100 p-8 text-red-500 relative"><span class="absolute top-2 left-2">✕</span><span class="font-brand font-bold text-4xl uppercase">KILNA</span></div><div class="bg-gray-100 p-8 text-red-500 relative"><span class="absolute top-2 left-2">✕</span><span class="font-brand font-bold text-4xl lowercase rotate-12 inline-block">kilna</span></div><div class="bg-gray-100 p-8 text-red-500 relative"><span class="absolute top-2 left-2">✕</span><span class="font-brand font-bold text-4xl lowercase text-blue-600">kilna</span></div><div class="bg-gray-100 p-8 text-red-500 relative"><span class="absolute top-2 left-2">✕</span><span class="font-brand font-bold text-4xl lowercase shadow-lg">kilna</span></div></div>`));
-            book.appendChild(createPage('03. LOGO', `<h3 class="font-sans font-bold text-4xl mb-12">Amblem.</h3><div class="flex justify-center items-center h-96"><div class="w-64 h-64 text-black"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M50 50 m 0 0 l 0 0" stroke-width="4" /><path d="M50 50 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0" /><path d="M50 50 m -26 0 a 26 26 0 1 0 52 0 a 26 26 0 1 0 -52 0" /><path d="M50 50 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0" /></svg></div></div><p class="text-center font-serif italic text-xl">"Sonsuz Dönüş"</p>`));
-            book.appendChild(createPage('04. RENK', `<h3 class="font-sans font-bold text-4xl mb-12">Renk: Ana.</h3><div class="h-64 bg-[#2C2420] w-full mb-4"></div><div class="font-mono text-sm"><strong>YANIK KÖMÜR</strong><br>HEX: #2C2420 | CMYK: 68/66/64/73</div>`));
-            book.appendChild(createPage('04. RENK', `<h3 class="font-sans font-bold text-4xl mb-12">Renk: Vurgu.</h3><div class="h-64 bg-[#C18C74] w-full mb-4"></div><div class="font-mono text-sm"><strong>TERRACOTTA</strong><br>HEX: #C18C74 | CMYK: 22/47/53/3</div>`));
-            book.appendChild(createPage('04. RENK', `<h3 class="font-sans font-bold text-4xl mb-12">Renk: Zemin.</h3><div class="h-64 bg-[#F5F2EB] w-full border border-gray-200 mb-4"></div><div class="font-mono text-sm"><strong>KAĞIT BEYAZI</strong><br>HEX: #F5F2EB | CMYK: 2/2/4/0</div>`));
-            book.appendChild(createPage('05. TİPOGRAFİ', `<div class="flex justify-between items-end border-b border-black pb-4 mb-12"><h3 class="font-sans font-bold text-4xl">Logo Fontu</h3><span class="font-mono text-xs text-brand-clay">BİRİNCİL</span></div><h1 class="font-brand font-bold text-[80px] leading-none mb-8 lowercase">Comfortaa</h1><div class="grid grid-cols-2 gap-8 mb-12"><div><span class="font-mono text-xs block mb-2 opacity-50">KARAKTER</span><p class="font-brand font-bold text-2xl opacity-80 lowercase">a b c ç d e f g ğ h ı i j k l m n o ö p r s ş t u ü v y z</p></div><div><span class="font-mono text-xs block mb-2 opacity-50">KULLANIM</span><p class="font-sans text-sm">Markanın imzası.</p></div></div>`));
-            book.appendChild(createPage('05. TİPOGRAFİ', `<div class="flex justify-between items-end border-b border-black pb-4 mb-12"><h3 class="font-sans font-bold text-4xl">Editoryal Font</h3><span class="font-mono text-xs text-brand-clay">BAŞLIK</span></div><h1 class="font-serif italic text-[80px] leading-none mb-8">Cormorant</h1><div class="grid grid-cols-2 gap-8 mb-12"><div><span class="font-mono text-xs block mb-2 opacity-50">STİL</span><p class="font-serif italic text-4xl leading-tight">Toprağın En Saf Hali.</p></div></div>`));
-            book.appendChild(createPage('05. TİPOGRAFİ', `<div class="flex justify-between items-end border-b border-black pb-4 mb-12"><h3 class="font-sans font-bold text-4xl">Gövde Fontu</h3><span class="font-mono text-xs text-brand-clay">OKUMA</span></div><h1 class="font-sans font-extrabold text-[80px] leading-none mb-8">Manrope</h1><p class="font-sans text-base leading-relaxed max-w-2xl border-l-2 border-brand-clay pl-4">"Kilna, modern yaşamın hızı içinde bir duraklama noktasıdır."</p>`));
-            book.appendChild(createPage('05. TİPOGRAFİ', `<div class="flex justify-between items-end border-b border-black pb-4 mb-12"><h3 class="font-sans font-bold text-4xl">Teknik Font</h3><span class="font-mono text-xs text-brand-clay">DETAY</span></div><h1 class="font-mono text-[80px] leading-none mb-8">Space Mono</h1><p class="font-sans text-sm">Ürün kodları, teknik özellikler ve etiketler için.</p>`));
-            book.appendChild(createPage('05. TİPOGRAFİ', `<h3 class="font-sans font-bold text-4xl mb-12">Hiyerarşi.</h3><div class="space-y-8"><div><span class="font-mono text-xs text-brand-clay">H1 (Cormorant)</span><h1 class="font-serif italic text-6xl">Yeni Koleksiyon</h1></div><div><span class="font-mono text-xs text-brand-clay">H2 (Comfortaa)</span><h2 class="font-brand font-bold text-3xl lowercase">doku serisi</h2></div><div><span class="font-mono text-xs text-brand-clay">BODY (Manrope)</span><p class="font-sans text-sm max-w-md text-gray-600">Her parça el yapımıdır ve kendine has dokular içerir.</p></div></div>`));
-            
-            // ========== UPDATED GRAPHIC SECTIONS ==========
+    <script>
+        const container = document.getElementById('dynamic-pages');
 
-            book.appendChild(createPage('06. GÖRSEL', `<h3 class="font-sans font-bold text-4xl mb-12">Görsel Dil.</h3><div class="w-full h-96 bg-gray-200 flex items-center justify-center mb-8">[Doğal Işık / Makro Doku]</div><p class="font-serif text-2xl italic">"Sert gölgeler yok. Sadece gün ışığı."</p>`));
-            book.appendChild(createPage('06. GÖRSEL', `<h3 class="font-sans font-bold text-4xl mb-12">Kompozisyon.</h3><div class="grid grid-cols-2 gap-4"><div class="aspect-[4/5] bg-gray-200"></div><div class="aspect-[4/5] bg-gray-200"></div></div><p class="mt-4 font-mono text-xs">Merkezi odak veya 1/3 kuralı.</p>`));
-
-            // P24: UPDATED ICON SET (FLAT)
-            book.appendChild(createPage('06. GÖRSEL', `
-                <h3 class="font-sans font-bold text-4xl mb-12">İkon Seti.</h3>
-                <div class="grid grid-cols-4 gap-8">
-                    <!-- Icon 1: Handmade -->
-                    <div class="aspect-square border border-gray-200 rounded flex flex-col items-center justify-center p-4">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" class="text-brand-base mb-2"><path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h5l3-3 3 3h5a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zM9 7a3 3 0 0 1 6 0v3H9V7z"/></svg>
-                        <span class="font-mono text-[8px] uppercase">Handmade</span>
-                    </div>
-                    <!-- Icon 2: Shipping -->
-                    <div class="aspect-square border border-gray-200 rounded flex flex-col items-center justify-center p-4">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" class="text-brand-base mb-2"><path d="M20 8h-3V4H3v14h1v2h2v-2h10v2h2v-2h2V8zM5 16H3v-2h2v2zm14 0h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>
-                        <span class="font-mono text-[8px] uppercase">Shipping</span>
-                    </div>
-                    <!-- Icon 3: Fragile -->
-                    <div class="aspect-square border border-gray-200 rounded flex flex-col items-center justify-center p-4">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" class="text-brand-base mb-2"><path d="M16 4l-1.5 5 3 2-2 3 2 4H6.5l2-4-2-3 3-2L8 4h8z"/></svg>
-                        <span class="font-mono text-[8px] uppercase">Fragile</span>
-                    </div>
-                    <!-- Icon 4: Eco -->
-                    <div class="aspect-square border border-gray-200 rounded flex flex-col items-center justify-center p-4">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" class="text-brand-base mb-2"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg>
-                        <span class="font-mono text-[8px] uppercase">Eco</span>
+        const addPage = (idNum, title, content, bg = 'bg-white', text = 'text-brand-black') => {
+            const page = document.createElement('div');
+            page.id = `page-${idNum.toString().padStart(2, '0')}`;
+            page.className = `page ${bg} ${text}`;
+            page.innerHTML = `
+                <div class="chapter-mark ${text.includes('white') ? 'opacity-20' : ''}">${title}</div>
+                <div class="grid-layout">
+                    <div class="col-span-12 h-full flex flex-col justify-center">
+                        ${content}
                     </div>
                 </div>
-                <p class="mt-8 font-mono text-xs opacity-70">Flat (Düz), tek renk, dolgulu vektörel ikonlar.</p>
-            `));
+                <div class="page-num ${text.includes('white') ? 'opacity-20' : ''}">${idNum.toString().padStart(2, '0')}</div>
+            `;
+            container.appendChild(page);
+        };
 
-            book.appendChild(createPage('07. EVRAK', `<div class="h-full flex items-center justify-center bg-gray-50 -m-[20mm]"><h2 class="font-serif italic text-6xl">Kurumsal Evrak</h2></div>`));
-            book.appendChild(createPage('07. EVRAK', `<h3 class="font-sans font-bold text-4xl mb-12">Kartvizit.</h3><div class="flex flex-col items-center gap-12"><div class="w-[90mm] h-[55mm] border border-black p-6 flex flex-col justify-between"><span class="font-brand font-bold text-xl lowercase">kilna</span><span class="font-mono text-[8px]">ONLINE MARKETPLACE</span></div><div class="w-[90mm] h-[55mm] bg-[#2C2420] text-white p-6 flex flex-col justify-center text-center"><span class="font-serif italic">Defne Yılmaz</span><span class="font-mono text-[8px] mt-2">FOUNDER</span></div></div>`));
-            book.appendChild(createPage('07. EVRAK', `<h3 class="font-sans font-bold text-4xl mb-12">Antetli Kağıt.</h3><div class="w-full h-[200mm] border border-gray-200 p-8 relative"><div class="absolute top-8 left-8 font-brand font-bold lowercase">kilna</div><div class="absolute bottom-8 left-8 font-mono text-[8px]">ISTANBUL, TR</div></div>`));
-            book.appendChild(createPage('07. EVRAK', `<h3 class="font-sans font-bold text-4xl mb-12">Zarf.</h3><div class="w-full h-[110mm] border border-gray-200 p-8 flex items-end justify-end"><div class="w-8 h-8 bg-black/10 rounded-full"></div></div>`));
-            book.appendChild(createPage('07. EVRAK', `<h3 class="font-sans font-bold text-4xl mb-12">Dosya.</h3><div class="w-[220mm] h-[150mm] bg-[#2C2420] text-white p-8"><h1 class="font-sans font-extralight text-8xl opacity-10">k</h1></div>`));
+        const emblemSvg = `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="50" cy="50" r="29" fill="none" stroke="currentColor" stroke-width="3" opacity="0.6"/><circle cx="50" cy="50" r="18" fill="none" stroke="currentColor" stroke-width="3" opacity="0.4"/><circle cx="50" cy="50" r="4" fill="currentColor"/></svg>`;
 
-            book.appendChild(createPage('08. AMBALAJ', `<div class="h-full flex items-center justify-center bg-[#C18C74] text-white -m-[20mm]"><h2 class="font-serif italic text-6xl">Ambalaj</h2></div>`));
-            book.appendChild(createPage('08. AMBALAJ', `<h3 class="font-sans font-bold text-4xl mb-12">Kargo Kutusu.</h3><div class="w-64 h-64 mx-auto bg-[#D6C0A0] border border-black/10 flex items-center justify-center relative"><div class="bg-white px-4 py-2 font-brand font-bold lowercase transform -rotate-2">kilna</div></div>`));
-            book.appendChild(createPage('08. AMBALAJ', `<h3 class="font-sans font-bold text-4xl mb-12">Koli Bandı.</h3><div class="h-16 bg-white border-y border-black flex items-center gap-12 overflow-hidden font-bold font-brand lowercase">kilna kilna kilna kilna kilna</div>`));
-            book.appendChild(createPage('08. AMBALAJ', `<h3 class="font-sans font-bold text-4xl mb-12">Etiket.</h3><div class="w-32 h-48 mx-auto border border-black p-4 flex flex-col justify-between text-center"><div class="w-4 h-4 bg-black rounded-full mx-auto"></div><div><span class="block font-serif italic text-lg">El Yapımı</span><span class="font-mono text-[8px]">HANDMADE IN ISTANBUL</span></div></div>`));
-            book.appendChild(createPage('08. AMBALAJ', `<h3 class="font-sans font-bold text-4xl mb-12">Pelur Deseni.</h3><div class="h-64 w-full bg-gray-50 overflow-hidden relative"><div class="absolute inset-0 p-4 opacity-10 font-brand font-bold text-4xl leading-tight lowercase">kilna kilna kilna kilna kilna</div></div>`));
-            book.appendChild(createPage('08. AMBALAJ', `<h3 class="font-sans font-bold text-4xl mb-12">Teşekkür Kartı.</h3><div class="w-[105mm] h-[148mm] border border-gray-200 mx-auto p-8 text-center flex flex-col justify-center"><p class="font-serif italic text-2xl">"Toprağa dokun."</p></div>`));
+        // 01. KURUMSAL MANİFESTO
+        addPage(3, '01. Kurumsal Manifesto', `
+            <div class="flex flex-col items-center text-center">
+                <span class="concept-label">Editorial Typography Focus</span>
+                <h2 class="hero-title text-brand-clay max-w-lg mx-auto">Kusurlulukta Saklı Kusursuzluk.</h2>
+                <div class="w-12 h-[1px] bg-white/20 mb-8"></div>
+                <p class="font-sans text-[11pt] leading-relaxed opacity-60 max-w-sm mx-auto">
+                    Makinelerin soğukluğuna karşı, toprağın dürüst karakterini kutsuyoruz. Kilna, nesnelerin değil, onların taşıdığı insan hikayelerinin evidir.
+                </p>
+                <div class="mt-24 w-16 h-16 text-brand-clay opacity-30">${emblemSvg}</div>
+            </div>
+        `, 'bg-brand-charcoal', 'text-white');
 
-            // UPDATED CARE CARD (FLAT ICONS)
-            book.appendChild(createPage('08. AMBALAJ', `
-                <h3 class="font-sans font-bold text-4xl mb-12">Ürün Bakım Kartı.</h3>
-                <div class="w-[100mm] h-[100mm] bg-brand-light border border-black/5 mx-auto p-8 flex flex-col justify-center text-center shadow-lg relative">
-                    <div class="absolute top-4 left-1/2 -translate-x-1/2 w-8 h-1 bg-brand-clay"></div>
-                    <h4 class="font-serif text-2xl mb-6">Bakım Rehberi</h4>
-                    <div class="grid grid-cols-2 gap-6 font-sans">
-                        <div class="flex flex-col items-center">
-                            <div class="w-10 h-10 bg-brand-clay/10 rounded-full flex items-center justify-center mb-2 text-brand-clay">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                            </div>
-                            <span class="text-[10px] font-bold uppercase">Elde Yıkayın</span>
-                        </div>
-                        <div class="flex flex-col items-center">
-                            <div class="w-10 h-10 bg-brand-clay/10 rounded-full flex items-center justify-center mb-2 text-brand-clay">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2zm-2-4H9V7h6v2z"/></svg>
-                            </div>
-                            <span class="text-[10px] font-bold uppercase">Gıda Dostu</span>
-                        </div>
-                        <div class="flex flex-col items-center">
-                            <div class="w-10 h-10 bg-brand-clay/10 rounded-full flex items-center justify-center mb-2 text-brand-clay">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
-                            </div>
-                            <span class="text-[10px] font-bold uppercase">Fırın Güvenli</span>
-                        </div>
-                        <div class="flex flex-col items-center">
-                            <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center mb-2 text-gray-500">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                            </div>
-                            <span class="text-[10px] font-bold uppercase">Mikrodalga Yok</span>
-                        </div>
+        // 02. MARKA STRATEJİSİ
+        addPage(4, '02. Marka Stratejisi', `
+            <div class="grid grid-cols-1 gap-12">
+                <span class="concept-label">Strategic Triangle Diagram</span>
+                <div class="grid grid-cols-3 gap-8">
+                    <div class="flex flex-col border-l border-gray-100 pl-6 py-4">
+                        <span class="font-serif italic text-3xl mb-4 text-brand-clay">Kürasyon</span>
+                        <p class="strategy-short italic opacity-60">Seçki sanatı ile pazarın gürültüsünü filtrelemek.</p>
+                    </div>
+                    <div class="flex flex-col border-l border-gray-100 pl-6 py-4">
+                        <span class="font-serif italic text-3xl mb-4 text-brand-clay">Zanaat</span>
+                        <p class="strategy-short italic opacity-60">İnsan elinin sıcaklığını üretimin merkezine koymak.</p>
+                    </div>
+                    <div class="flex flex-col border-l border-gray-100 pl-6 py-4">
+                        <span class="font-serif italic text-3xl mb-4 text-brand-clay">Bağlantı</span>
+                        <p class="strategy-short italic opacity-60">Sanatçı ile alıcı arasında duygusal köprü kurmak.</p>
                     </div>
                 </div>
-            `));
+                <div class="visual-area h-48 bg-gray-50 flex items-center justify-center">
+                    <span class="font-mono text-[7pt] opacity-20 uppercase tracking-[1em]">Strategic Infographic Placeholder</span>
+                </div>
+            </div>
+        `);
 
-            book.appendChild(createPage('09. PERSONEL', `<div class="h-full flex items-center justify-center bg-gray-100 -m-[20mm]"><h2 class="font-serif italic text-6xl">Personel & Araç</h2></div>`));
-            book.appendChild(createPage('09. PERSONEL', `<h3 class="font-sans font-bold text-4xl mb-12">Bez Çanta.</h3><div class="w-64 h-80 bg-[#F0EEE9] mx-auto border border-black/10 flex items-center justify-center"><h1 class="font-brand font-bold text-4xl opacity-80 lowercase">kilna</h1></div>`));
-            book.appendChild(createPage('09. PERSONEL', `<h3 class="font-sans font-bold text-4xl mb-12">Önlük.</h3><div class="w-48 h-64 bg-[#2C2420] mx-auto rounded-t-xl relative pt-8 text-center text-white"><span class="font-mono text-[10px]">STAFF</span></div>`));
-            book.appendChild(createPage('09. PERSONEL', `<h3 class="font-sans font-bold text-4xl mb-12">T-Shirt.</h3><div class="w-64 h-64 bg-white border border-gray-200 mx-auto rounded-3xl pt-8 text-center"><span class="font-brand font-bold text-xl lowercase">k</span></div>`));
-            book.appendChild(createPage('09. PERSONEL', `<h3 class="font-sans font-bold text-4xl mb-12">Personel Kartı.</h3><div class="w-[54mm] h-[86mm] border border-gray-200 mx-auto rounded-lg shadow-lg relative overflow-hidden bg-white"><div class="h-1/3 bg-brand-clay w-full"></div><div class="w-16 h-16 rounded-full bg-gray-200 border-4 border-white absolute top-[25%] left-1/2 -translate-x-1/2"></div><div class="mt-16 text-center"><h4 class="font-serif italic text-xl">Can Yılmaz</h4><p class="font-mono text-[8px] uppercase tracking-widest text-gray-500 mt-1">Lojistik Sorumlusu</p><div class="font-brand font-bold text-lg mt-4 lowercase">kilna</div></div></div>`));
-            book.appendChild(createPage('09. PERSONEL', `<h3 class="font-sans font-bold text-4xl mb-12">Yaka Kartı.</h3><div class="w-[70mm] h-[25mm] bg-[#2C2420] mx-auto rounded shadow-lg flex items-center px-4 justify-between text-white"><span class="font-serif italic text-lg">Zeynep</span><span class="font-brand font-bold text-sm opacity-50 lowercase">kilna</span></div>`));
-            book.appendChild(createPage('09. PERSONEL', `<h3 class="font-sans font-bold text-4xl mb-12">Araç Giydirme.</h3><div class="h-32 w-full bg-white border border-gray-200 relative"><div class="absolute top-1/2 left-8 -translate-y-1/2 font-brand font-bold lowercase">kilna</div></div>`));
+        // 03. LOGO SİSTEMİ
+        addPage(8, '03. Logo Sistemi', `
+            <div class="visual-area h-[150mm] flex flex-col items-center justify-center p-20">
+                <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 20px 20px;"></div>
+                <div class="w-32 h-32 mb-10 text-brand-clay relative z-10">${emblemSvg}</div>
+                <h1 class="font-brand font-bold text-[120px] lowercase tracking-tighter leading-none relative z-10">kilna</h1>
+                <div class="mt-20 font-mono text-[7pt] uppercase tracking-widest opacity-30">Master Logo Lockup (Vertical)</div>
+            </div>
+        `);
 
-            book.appendChild(createPage('10. DİJİTAL', `<div class="h-full flex items-center justify-center bg-black text-white -m-[20mm]"><h2 class="font-serif italic text-6xl">Dijital Varlıklar</h2></div>`));
-            book.appendChild(createPage('10. DİJİTAL', `<h3 class="font-sans font-bold text-4xl mb-12">Avatar.</h3><div class="grid grid-cols-3 gap-8 text-center"><div><div class="w-32 h-32 bg-brand-clay rounded-full mx-auto flex items-center justify-center text-white mb-4"><span class="font-brand font-bold text-4xl lowercase">k</span></div></div></div>`));
-            book.appendChild(createPage('10. DİJİTAL', `<h3 class="font-sans font-bold text-4xl mb-12">Web Anasayfa.</h3><div class="border border-gray-200 rounded-t-lg h-96 w-full bg-white relative overflow-hidden"><div class="absolute inset-0 bg-gray-50 flex items-center justify-center"><span class="font-serif italic text-2xl">Hero Görsel</span></div></div>`));
-            book.appendChild(createPage('10. DİJİTAL', `<h3 class="font-sans font-bold text-4xl mb-12">Web Ürün.</h3><div class="grid grid-cols-2 gap-8"><div class="h-64 bg-gray-100"></div><div class="flex flex-col justify-center"><h4 class="font-serif text-2xl">Vazo No.1</h4><p class="font-mono text-xs mt-2">₺1.200</p><button class="bg-black text-white py-2 mt-4 text-xs">Sepete Ekle</button></div></div>`));
-            book.appendChild(createPage('10. DİJİTAL', `<h3 class="font-sans font-bold text-4xl mb-12">Instagram.</h3><div class="grid grid-cols-3 gap-1"><div class="aspect-square bg-gray-200"></div><div class="aspect-square bg-gray-200 flex items-center justify-center text-center p-2 font-serif italic text-xs">Quote</div><div class="aspect-square bg-gray-200"></div></div>`));
-            book.appendChild(createPage('10. DİJİTAL', `<h3 class="font-sans font-bold text-4xl mb-12">E-Posta İmzası.</h3><div class="border-t border-b border-gray-200 py-8 flex gap-6 items-center"><div class="w-16 h-16 bg-brand-clay rounded-full flex items-center justify-center text-white font-brand font-bold text-2xl lowercase">k</div><div class="font-sans"><strong class="block text-lg">Defne Yılmaz</strong><span class="text-sm text-gray-500">Founder</span></div></div>`));
-            book.appendChild(createPage('10. DİJİTAL', `<h3 class="font-sans font-bold text-4xl mb-12">Erişilebilirlik.</h3><div class="grid grid-cols-2 gap-8"><div><h4 class="font-bold mb-4">Renk Kontrastı</h4><p class="text-xs">WCAG AA Standartlarına uygundur.</p></div><div><h4 class="font-bold mb-4">Alt Metinler</h4><p class="text-xs">Tüm ürün görselleri betimlenmelidir.</p></div></div>`));
-
-            book.appendChild(createPage('11. EKOSİSTEM', `<div class="h-full flex items-center justify-center bg-brand-green text-white -m-[20mm]"><h2 class="font-serif italic text-6xl">Ekosistem</h2></div>`, 'bg-[#4A5D4F] text-white'));
-            book.appendChild(createPage('11. EKOSİSTEM', `<h3 class="font-sans font-bold text-4xl mb-12">Co-Branding.</h3><div class="flex items-center justify-center gap-8 text-4xl border border-gray-200 p-12 rounded-xl"><span class="font-brand font-bold lowercase">kilna</span><span class="font-thin text-gray-300">|</span><span class="font-serif italic">Artist Name</span></div>`));
-            book.appendChild(createPage('11. EKOSİSTEM', `<h3 class="font-sans font-bold text-4xl mb-12">UGC Rehberi.</h3><div class="grid grid-cols-2 gap-8"><div class="bg-gray-100 h-64 flex items-center justify-center text-center p-4">[Doğal ev ortamında çekilmiş müşteri fotoğrafı]</div><div class="flex flex-col justify-center"><h4 class="font-bold mb-4">Repost Kriterleri</h4><ul class="list-disc list-inside text-sm space-y-2 opacity-70"><li>Doğal ışıkta çekilmiş olmalı.</li><li>Ürün net görünmeli.</li></ul></div></div>`));
-            book.appendChild(createPage('11. EKOSİSTEM', `<h3 class="font-sans font-bold text-4xl mb-12">Kriz İletişimi.</h3><div class="space-y-8"><div class="p-6 border border-red-200 bg-red-50 rounded"><h4 class="font-bold text-red-800 text-sm mb-2">Kırık Ürün Vakası</h4><p class="text-xs italic">"Çok üzgünüz. El yapımı parçaların hassasiyetini biliyoruz. Hemen telafisi için süreci başlatıyoruz."</p></div></div>`));
-
-            // UPDATED TRUST BADGES (FLAT ICONS)
-            book.appendChild(createPage('11. EKOSİSTEM', `
-                <h3 class="font-sans font-bold text-4xl mb-12">Güven Rozetleri.</h3>
-                <div class="grid grid-cols-3 gap-8 text-center">
-                    <div class="p-8 border border-gray-200 rounded-full flex flex-col items-center justify-center aspect-square">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" class="text-brand-base mb-2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                        <span class="font-mono text-[10px] uppercase">Plastiksiz Kargo</span>
-                    </div>
-                    <div class="p-8 border border-gray-200 rounded-full flex flex-col items-center justify-center aspect-square">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" class="text-brand-base mb-2"><path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h5l3-3 3 3h5a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5z"/></svg>
-                        <span class="font-mono text-[10px] uppercase">%100 El Yapımı</span>
-                    </div>
-                    <div class="p-8 border border-gray-200 rounded-full flex flex-col items-center justify-center aspect-square">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" class="text-brand-base mb-2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                        <span class="font-mono text-[10px] uppercase">Yerel Üretim</span>
+        // AMBLEM & GRID
+        addPage(9, '03. Logo Sistemi', `
+            <div class="grid grid-cols-2 gap-4 h-full">
+                <div class="visual-area bg-brand-charcoal text-brand-clay p-16 flex items-center justify-center">
+                    <div class="w-full relative">
+                        <div class="absolute inset-0 border border-brand-clay/20 rounded-full scale-110 border-dashed"></div>
+                        <div class="absolute inset-0 border border-brand-clay/20 rounded-full scale-150 border-dashed"></div>
+                        ${emblemSvg}
                     </div>
                 </div>
-            `));
+                <div class="p-8 flex flex-col justify-center">
+                    <span class="concept-label">Technical Grid Diagram</span>
+                    <h3 class="font-serif text-3xl italic mb-6">Matematiksel Zerafet</h3>
+                    <p class="strategy-short mb-8">Amblem, çömlekçi çarkının merkezcil kuvvetini simgeleyen 4 halka ve 1 odak noktasından oluşan 3px fine-line bir yapıdır.</p>
+                    <div class="flex gap-2">
+                        <div class="w-4 h-4 bg-brand-clay rounded-full"></div>
+                        <div class="w-4 h-4 bg-brand-sand rounded-full"></div>
+                        <div class="w-4 h-4 bg-brand-beige rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        `);
 
-            book.appendChild(createPage('11. EKOSİSTEM', `<h3 class="font-sans font-bold text-4xl mb-12">Sadakat Programı.</h3><div class="bg-brand-clay text-white p-12 rounded-xl relative overflow-hidden shadow-2xl"><div class="absolute top-0 right-0 p-8 opacity-20 text-9xl font-serif italic">C</div><h2 class="font-serif italic text-4xl mb-2">Collectors Club</h2><p class="text-xs opacity-80 mb-8">Özel Seçki & Erken Erişim</p><div class="font-mono text-sm tracking-widest">0000 1234 5678</div></div>`));
-            
-            book.appendChild(createPage('11. İLETİŞİM', `<div class="h-full flex flex-col justify-center items-center text-center -m-[20mm]"><h2 class="font-brand font-bold text-4xl mb-4 lowercase">kilna</h2><div class="w-12 h-px bg-black mb-4"></div><p class="font-mono text-xs text-gray-500">Istanbul, TR<br>hello@kilna.com<br>© 2026 KILNA MARKETPLACE</p></div>`));
-        </script>
+        // DO & DON'T
+        addPage(10, '03. Logo Sistemi', `
+            <div class="grid grid-cols-2 gap-4 h-[180mm]">
+                <div class="visual-area flex items-center justify-center"><div class="text-center"><div class="w-12 h-12 mb-4 mx-auto text-brand-clay">${emblemSvg}</div><h1 class="font-brand font-bold text-xl lowercase">kilna</h1><span class="text-green-500 font-mono text-[7pt] mt-4 block">DO</span></div></div>
+                <div class="visual-area bg-gray-50 flex items-center justify-center opacity-40"><span class="font-brand font-bold text-3xl uppercase tracking-widest">KILNA</span><div class="absolute top-4 left-4 text-red-500 font-mono text-[7pt]">✕ No Upper</div></div>
+                <div class="visual-area bg-gray-50 flex items-center justify-center opacity-40"><h1 class="font-brand font-bold text-3xl lowercase rotate-12 text-blue-500">kilna</h1><div class="absolute top-4 left-4 text-red-500 font-mono text-[7pt]">✕ No Rotate</div></div>
+                <div class="visual-area bg-gray-50 flex items-center justify-center opacity-40"><h1 class="font-serif font-bold text-3xl">kilna</h1><div class="absolute top-4 left-4 text-red-500 font-mono text-[7pt]">✕ No Serif</div></div>
+            </div>
+        `);
 
+        // 04. RENK & DOKU
+        addPage(14, '04. Renk & Doku', `
+            <div class="flex flex-col h-full">
+                <span class="concept-label">Color Swatch & Hierarchy</span>
+                <div class="flex-1 grid grid-cols-12 gap-1 mb-4">
+                    <div class="col-span-8 bg-brand-clay relative flex flex-col justify-end p-6 text-white">
+                        <span class="font-serif italic text-4xl">Clay</span>
+                        <span class="font-mono text-[8pt] opacity-60">#C69C86</span>
+                    </div>
+                    <div class="col-span-4 grid grid-rows-2 gap-1">
+                        <div class="bg-brand-sand flex flex-col justify-end p-4 text-brand-black"><span class="font-mono text-[7pt] opacity-60">#DBC0B0</span></div>
+                        <div class="bg-brand-charcoal flex flex-col justify-end p-4 text-white"><span class="font-mono text-[7pt] opacity-60">#2C2420</span></div>
+                    </div>
+                </div>
+                <div class="h-48 visual-area bg-[#EBDAD0] flex items-center justify-center">
+                    <div class="absolute inset-0 opacity-20" style="background-image: url('https://www.transparenttextures.com/patterns/cardboard-flat.png');"></div>
+                    <span class="font-mono text-[8pt] uppercase tracking-[1em] opacity-40">Material Texture Reference</span>
+                </div>
+            </div>
+        `);
+
+        // 05. TIPOGRAFI
+        addPage(18, '05. Tipografi', `
+            <div class="space-y-12">
+                <span class="concept-label">Type specimen Grid</span>
+                <div class="border-b border-gray-100 pb-12">
+                    <h1 class="font-brand font-bold text-[120pt] leading-none lowercase opacity-80">Aa</h1>
+                    <div class="flex justify-between items-baseline mt-4">
+                        <span class="font-mono text-xs uppercase tracking-widest text-brand-clay">Comfortaa</span>
+                        <p class="text-[9pt] opacity-40">Modern, Organic, Accessible.</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-12">
+                    <div>
+                        <h2 class="font-serif italic text-5xl opacity-80 mb-4">"Sadeliğin Zenginliği."</h2>
+                        <span class="font-mono text-[7pt] uppercase tracking-widest text-brand-clay">Cormorant Garamond</span>
+                    </div>
+                    <div class="pt-2">
+                        <p class="font-sans text-[11pt] leading-relaxed text-gray-500">
+                            Okunabilirlik ve estetik arasındaki hassas denge. Web ve dijital platformlar için Manrope (Sans) ailesi teknik verilerde eşlik eder.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        `);
+
+        // 06. GÖRSEL DİL
+        addPage(22, '06. Görsel Dil', `
+            <div class="grid grid-cols-2 gap-4 h-[160mm]">
+                <div class="visual-area flex items-center justify-center"><span class="font-mono text-[7pt] opacity-20 uppercase tracking-widest">High-Key / Natural Light</span></div>
+                <div class="grid grid-rows-2 gap-4 h-full">
+                    <div class="visual-area flex items-center justify-center bg-gray-50"><span class="font-mono text-[7pt] opacity-20 uppercase tracking-widest">Macro Texture</span></div>
+                    <div class="visual-area flex items-center justify-center bg-brand-charcoal text-white"><span class="font-mono text-[7pt] opacity-20 uppercase tracking-widest">Minimal Composition</span></div>
+                </div>
+            </div>
+            <div class="mt-8 grid grid-cols-4 gap-8 text-brand-clay">
+                <div class="w-10 h-10 border border-brand-clay/20 flex items-center justify-center rounded-sm"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.2"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg></div>
+                <div class="w-10 h-10 border border-brand-clay/20 flex items-center justify-center rounded-sm"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.2"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
+                <div class="w-10 h-10 border border-brand-clay/20 flex items-center justify-center rounded-sm"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.2"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"/></svg></div>
+                <div class="w-10 h-10 border border-brand-clay/20 flex items-center justify-center rounded-sm"><span class="font-mono text-[8pt]">1px</span></div>
+            </div>
+        `);
+
+        // 07. UYGULAMA (EVRAK)
+        addPage(26, '07. Kurumsal Evrak', `
+            <div class="flex flex-col items-center justify-center h-full">
+                <span class="concept-label">Tangible Mockup Set</span>
+                <div class="w-[140mm] h-[80mm] bg-white mockup-shadow border border-gray-100 p-12 flex flex-col justify-between mb-8 relative">
+                     <div class="flex justify-between items-start">
+                        <span class="font-brand font-bold text-4xl lowercase">kilna</span>
+                        <div class="w-12 h-12 text-brand-clay opacity-50">${emblemSvg}</div>
+                    </div>
+                    <div class="flex justify-between items-end border-t border-gray-100 pt-6">
+                        <div class="font-mono text-[8pt] text-gray-400 uppercase tracking-widest leading-loose">Defne Yılmaz<br>Founder & Curator</div>
+                        <div class="font-mono text-[8pt] text-gray-300">hello@kilna.com</div>
+                    </div>
+                </div>
+                <div class="w-[140mm] h-[40mm] bg-kraft mockup-shadow flex items-center justify-center text-brand-charcoal opacity-80">
+                     <div class="w-16 h-16">${emblemSvg}</div>
+                </div>
+            </div>
+        `, 'bg-gray-50');
+
+        // 08. AMBALAJ
+        addPage(30, '08. Ambalaj', `
+            <div class="flex flex-col items-center justify-center">
+                <span class="concept-label">Packaging 3D Concept</span>
+                <div class="w-[110mm] h-[110mm] bg-brand-kraft mockup-shadow relative flex items-center justify-center p-12">
+                     <div class="absolute inset-0 border border-white/30 m-6"></div>
+                     <div class="text-center z-10">
+                        <div class="w-20 h-20 mx-auto mb-6 text-brand-black opacity-40">${emblemSvg}</div>
+                        <h1 class="font-brand font-bold text-4xl lowercase opacity-70">kilna</h1>
+                        <p class="font-mono text-[8pt] uppercase tracking-[0.4em] mt-4 opacity-30 italic">Handmade in Anatolia</p>
+                    </div>
+                </div>
+                <div class="mt-12 text-center text-gray-400 font-serif italic text-xl max-w-xs mx-auto">"Kutuyu açmak, hikayeyi başlatmaktır."</div>
+            </div>
+        `);
+
+        // 10. DIJITAL
+        addPage(44, '10. Dijital Tasarım', `
+            <div class="visual-area h-[150mm] p-10 flex flex-col bg-white mockup-shadow">
+                <div class="flex justify-between items-center mb-20 opacity-30 border-b border-gray-100 pb-4">
+                    <div class="flex gap-2"><div class="w-2 h-2 rounded-full bg-black"></div><div class="w-2 h-2 rounded-full bg-black"></div></div>
+                    <span class="font-brand font-bold text-lg lowercase">kilna</span>
+                    <div class="w-6 h-6 border border-black rounded-full"></div>
+                </div>
+                <div class="flex-1 flex flex-col items-center justify-center">
+                    <h2 class="font-serif italic text-7xl mb-8">Sadelik.</h2>
+                    <button class="px-10 py-3 bg-brand-black text-white font-mono text-[8pt] uppercase tracking-[0.3em] rounded-full shadow-2xl hover:bg-brand-clay transition-all">Koleksiyon</button>
+                </div>
+                <div class="grid grid-cols-3 gap-4 opacity-10">
+                    <div class="h-24 bg-gray-200"></div><div class="h-24 bg-gray-200"></div><div class="h-24 bg-gray-200"></div>
+                </div>
+            </div>
+            <div class="mt-8 font-mono text-[7pt] uppercase tracking-widest opacity-30 text-center">Mobile & Web UI Standards (White Gallery Concept)</div>
+        `);
+
+        // 11. SOSYAL MEDYA
+        addPage(52, '11. Sosyal Medya', `
+             <div class="grid grid-cols-3 gap-1 bg-gray-100 p-1 h-[140mm] mockup-shadow">
+                <div class="bg-white flex items-center justify-center"><span class="font-mono text-[6pt] opacity-10">Visual 01</span></div>
+                <div class="bg-white flex items-center justify-center p-8 text-center"><span class="font-serif italic text-xl opacity-60 text-brand-clay">"Az,<br>aslında<br>çoktur."</span></div>
+                <div class="bg-white flex items-center justify-center"><div class="w-12 h-12 text-brand-clay opacity-30">${emblemSvg}</div></div>
+                <div class="bg-brand-charcoal flex flex-col items-center justify-center text-center p-4"><p class="font-serif italic text-white text-[9pt] opacity-80">Toprakla kurulan bağ.</p></div>
+                <div class="bg-white"></div>
+                <div class="bg-brand-kraft opacity-50"></div>
+                <div class="bg-white"></div>
+                <div class="bg-white"></div>
+                <div class="bg-white flex items-center justify-center"><h1 class="font-brand font-bold text-2xl lowercase opacity-20">kilna</h1></div>
+            </div>
+            <div class="mt-12 space-y-4">
+                 <span class="concept-label">Grid Rhythm: (1 Product - 1 Text - 1 Detail)</span>
+            </div>
+        `);
+
+        // 12. EKOSİSTEM
+        addPage(58, '12. Ekosistem', `
+             <div class="visual-area bg-brand-charcoal h-[100mm] rounded-sm p-12 flex flex-col justify-between text-white shadow-2xl mockup-shadow">
+                <div class="flex justify-between items-start">
+                    <span class="font-brand font-bold text-3xl lowercase text-brand-clay">kilna collector</span>
+                    <div class="w-16 h-16 text-brand-clay opacity-30">${emblemSvg}</div>
+                </div>
+                <div class="font-mono text-sm tracking-[0.5em] opacity-40">0018 2994 3302</div>
+            </div>
+            <div class="mt-12 flex flex-col items-center text-center">
+                <span class="concept-label">Community Key Element</span>
+                <p class="font-serif italic text-xl text-gray-500">"Koleksiyoner, zanaatın geleceğine ortak olan patrondur."</p>
+            </div>
+        `);
+
+        // 13. ANALİZ
+        addPage(62, '13. Analiz', `
+            <div class="text-center space-y-12 max-w-sm mx-auto">
+                <div class="w-20 h-20 mx-auto text-brand-clay opacity-60">${emblemSvg}</div>
+                <h3 class="font-serif text-5xl italic leading-tight text-brand-charcoal">"Zanaatın kadim ruhunu modern tasarımın sessizliğiyle mühürledik."</h3>
+                <div class="w-8 h-[1px] bg-brand-clay mx-auto"></div>
+                <div class="font-mono text-[7.5pt] uppercase tracking-[0.5em] opacity-30">Final Visual Statement Approved &bull; 2026</div>
+            </div>
+        `);
+
+    </script>
+
+    <div class="fixed bottom-6 right-6 flex gap-3 no-print z-[100]">
+        <button onclick="window.print()" class="bg-brand-clay text-white px-10 py-4 rounded-full font-mono text-[11px] uppercase tracking-[0.2em] shadow-2xl hover:bg-brand-charcoal transition-all font-bold">
+            PDF Olarak İndir
+        </button>
     </div>
 
 </body>
